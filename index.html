@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>大阪·北海道 9日行程地图 | 12/19–12/27</title>
+<meta name="description" content="大阪3天+函馆2天+登别温泉1晚+札幌小樽3天，2026年12月19–27日冬季行程参考地图">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+:root {
+  --bg-primary:    #ffffff;
+  --bg-secondary:  #f5f5f7;
+  --bg-tertiary:   #fbfbfd;
+  --bg-grouped:    #f2f2f7;
+  --bg-elevated:   #ffffff;
+  --text-primary:   #1d1d1f;
+  --text-secondary: #86868b;
+  --text-tertiary:  #aeaeb2;
+  --accent:        #0071e3;
+  --accent-hover:  #0077ed;
+  --tint-red:    #ff3b30;
+  --tint-orange: #ff9500;
+  --tint-green:  #34c759;
+  --tint-blue:   #007aff;
+  --tint-purple: #af52de;
+  --tint-pink:   #ff2d55;
+  --separator:  rgba(60, 60, 67, .12);
+  --shadow-sm:  0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:  0 4px 14px rgba(0,0,0,.08);
+  --shadow-lg:  0 8px 30px rgba(0,0,0,.12);
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  20px;
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+               "Helvetica Neue", "Arial", sans-serif;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.47059;
+  letter-spacing: -0.022em;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+#map { width: 100%; height: 40vh; min-height: 280px; position: sticky; top: 0; z-index: 100; }
+.locate-btn {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: rgba(255,255,255,.92); backdrop-filter: blur(8px);
+  border: none; box-shadow: 0 1px 4px rgba(0,0,0,.18);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.locate-btn.active { color: #007aff; }
+@keyframes loc-pulse {
+  0%   { transform: scale(1); opacity: .55; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.loc-pulse {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: rgba(0,122,255,.25);
+  animation: loc-pulse 1.6s ease-out infinite;
+}
+.tabs {
+  display: flex; gap: 6px; padding: 12px 16px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  background: rgba(255,255,255,.85); -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px); position: sticky; top: 40vh; z-index: 99;
+  border-bottom: .5px solid var(--separator); scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex-shrink: 0; padding: 7px 16px; border-radius: 980px; border: none;
+  background: var(--bg-grouped); color: var(--text-secondary);
+  font-size: 14px; font-weight: 500; cursor: pointer; transition: all .25s ease;
+  white-space: nowrap; letter-spacing: -0.01em;
+}
+.tab:active { transform: scale(.96); }
+.tab.active { background: var(--accent); color: #fff; }
+.content { max-width: 680px; margin: 0 auto; padding: 16px 16px calc(24px + var(--safe-bottom)); }
+.hero { text-align: center; padding: 28px 20px 20px; }
+.hero h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; }
+.hero .subtitle { font-size: 17px; color: var(--text-secondary); margin-top: 6px; font-weight: 400; }
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.info-card { background: var(--bg-elevated); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); }
+.info-card .label { font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .02em; margin-bottom: 6px; }
+.info-card .value { font-size: 15px; font-weight: 600; line-height: 1.4; }
+.section-head { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .03em; padding: 20px 0 8px; }
+.day-head { padding: 20px 0 12px; }
+.day-head h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.day-head p { font-size: 15px; color: var(--text-secondary); margin-top: 2px; }
+.route-bar { background: var(--bg-elevated); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 14px; box-shadow: var(--shadow-sm); font-size: 13px; color: var(--text-secondary); line-height: 1.7; white-space: pre-line; }
+.route-bar strong { color: var(--text-primary); }
+.timeline { position: relative; padding-left: 24px; }
+.timeline::before { content: ''; position: absolute; left: 7px; top: 20px; bottom: 20px; width: 1.5px; background: var(--separator); }
+.tl-item { position: relative; margin-bottom: 10px; }
+.tl-dot { position: absolute; left: -20px; top: 18px; width: 10px; height: 10px; border-radius: 50%; z-index: 1; box-shadow: 0 0 0 3px var(--bg-secondary); }
+.tl-dot.food    { background: var(--tint-red); }
+.tl-dot.spot    { background: var(--tint-blue); }
+.tl-dot.hotel   { background: var(--tint-orange); }
+.tl-dot.drink   { background: var(--tint-purple); }
+.tl-dot.transport { background: var(--text-tertiary); }
+.card { background: var(--bg-elevated); border-radius: var(--radius-md); padding: 14px 16px; box-shadow: var(--shadow-sm); transition: box-shadow .25s ease; cursor: pointer; }
+.card:active { box-shadow: var(--shadow-md); }
+.card .time { font-size: 12px; font-weight: 600; color: var(--text-tertiary); letter-spacing: .01em; }
+.card .name { font-size: 17px; font-weight: 600; margin: 2px 0 4px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 6px; }
+.card .desc { font-size: 14px; color: var(--text-secondary); line-height: 1.45; }
+.badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 4px; }
+.badge.food   { background: rgba(255,59,48,.1);  color: var(--tint-red); }
+.badge.spot   { background: rgba(0,122,255,.1);  color: var(--tint-blue); }
+.badge.drink  { background: rgba(175,82,222,.1); color: var(--tint-purple); }
+.budget { display: inline-block; margin-top: 6px; padding: 3px 10px; background: var(--bg-grouped); border-radius: var(--radius-sm); font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+.pays { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+.pay { font-size: 11px; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
+.pay.ok  { background: rgba(52,199,89,.1);  color: var(--tint-green); }
+.pay.no  { background: rgba(255,59,48,.08); color: var(--tint-red); }
+.pay.idk { background: rgba(255,149,0,.1);  color: var(--tint-orange); }
+.links { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 8px 14px; border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 600; border: none; cursor: pointer;
+  text-decoration: none !important; transition: filter .2s;
+}
+.btn:active { filter: brightness(.9); }
+.btn.nav    { background: var(--accent); color: #fff; }
+.btn.cut    { background: var(--bg-grouped); color: var(--tint-red); }
+.btn.restore{ background: var(--bg-grouped); color: var(--tint-green); }
+.cut-item { background: var(--bg-elevated); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 8px; box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.cut-item .ci-name { font-size: 14px; color: var(--text-secondary); text-decoration: line-through; }
+.cut-item .ci-day { font-size: 11px; color: var(--text-tertiary); }
+.cut-bar { background: rgba(255,149,0,.08); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 12px; font-size: 13px; color: var(--tint-orange); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.cut-bar button { border: none; background: none; color: var(--accent); font-size: 13px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
+.route-info { background: var(--bg-elevated); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 12px; box-shadow: var(--shadow-sm); font-size: 13px; line-height: 1.8; }
+.route-info h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.route-info .leg { display: flex; align-items: center; gap: 6px; color: var(--text-secondary); }
+.route-info .leg b { color: var(--tint-blue); font-weight: 600; flex-shrink: 0; }
+.route-info .note { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; }
+.btn.xhs    { background: #ff2442; color: #fff; }
+.btn.dp     { background: #ffa700; color: #fff; }
+.btn.rsv    { background: var(--tint-green); color: #fff; }
+.as-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,.35); backdrop-filter: blur(2px);
+  display: flex; align-items: flex-end; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .25s;
+}
+.as-overlay.show { opacity: 1; pointer-events: auto; }
+.as-sheet {
+  width: 100%; max-width: 420px;
+  padding: 0 8px 34px;
+  transform: translateY(100%); transition: transform .3s cubic-bezier(.22,1,.36,1);
+}
+.as-overlay.show .as-sheet { transform: translateY(0); }
+.as-group {
+  background: rgba(255,255,255,.88); backdrop-filter: blur(20px);
+  border-radius: 14px; overflow: hidden; margin-bottom: 8px;
+}
+.as-group .as-item {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 16px; font-size: 18px; color: #007aff; font-weight: 500;
+  border: none; background: none; width: 100%; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.as-group .as-item + .as-item { border-top: .5px solid rgba(0,0,0,.12); }
+.as-group .as-item:active { background: rgba(0,0,0,.06); }
+.as-cancel { font-weight: 600; }
+.details {
+  margin-top: 10px; padding-top: 10px;
+  border-top: .5px solid var(--separator);
+  font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+}
+.details.closed { display: none; }
+.day-list .card { margin-bottom: 8px; }
+.day-list .card .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.pay-summary { background: var(--bg-elevated); border-radius: var(--radius-md); padding: 14px 16px; box-shadow: var(--shadow-sm); font-size: 13px; line-height: 1.7; margin-bottom: 10px; }
+.pay-summary h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.pay-summary .warn { color: var(--tint-red); }
+.pay-summary .ok-text { color: var(--tint-green); }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; padding: 8px 0; font-size: 12px; color: var(--text-secondary); }
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+.leaflet-popup-content-wrapper { border-radius: var(--radius-md) !important; box-shadow: var(--shadow-lg) !important; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif !important; }
+.leaflet-popup-content { font-size: 14px !important; line-height: 1.5 !important; margin: 12px 14px !important; }
+.leaflet-popup-content a { color: var(--accent) !important; }
+.leaflet-popup-tip { background: #fff !important; }
+.leaflet-control-zoom a { width: 34px !important; height: 34px !important; line-height: 34px !important; font-size: 16px !important; border-radius: 10px !important; background: rgba(255,255,255,.85) !important; -webkit-backdrop-filter: blur(10px) !important; backdrop-filter: blur(10px) !important; border: .5px solid var(--separator) !important; color: var(--text-primary) !important; }
+.leaflet-control-zoom { border-radius: 12px !important; overflow: hidden; box-shadow: var(--shadow-md) !important; border: none !important; }
+.leaflet-control-attribution { font-size: 9px !important; opacity: .5; }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+<div class="tabs" id="tabs"></div>
+<div class="content" id="content"></div>
+
+<script>
+const HOTEL = { name: '难波/心斋桥酒店（待订）', lat: 34.6687, lng: 135.5010 };
+
+const DAYS = [
+  { id: 0, label: '总览', color: '#0071e3', locations: [] },
+  { id: 1, label: 'D1 大阪', date: '12/19 周六', title: '难波落地 · 道顿堀', color: '#ff9500', locations: [
+    { name: '关西国际机场 KIX', lat: 34.4320, lng: 135.2304, type: 'transport', time: '12:00', desc: '落地 → 南海电铁到难波约40分钟', gmap: 'Kansai+International+Airport' },
+    { name: '酒店寄存行李（难波/心斋桥）', lat: 34.6687, lng: 135.5010, type: 'hotel', time: '14:00', desc: '住难波—心斋桥之间，3晚（19–21日），出门就是道顿堀', detail: '待订。选址原则：南海难波站或地铁心斋桥站步行8分钟内。', gmap: 'Namba+Station+Osaka' },
+    { name: '道顿堀 · 戎桥格力高', lat: 34.6687, lng: 135.5010, type: 'spot', time: '15:00', desc: '格力高广告牌打卡，沿河走到法善寺横丁', detail: '拍照避开人流：早上9点前或深夜。法善寺横丁有水挂不动尊，可泼水许愿。', gmap: 'Dotonbori+Glico+Sign', xhsKeyword: '道顿堀 格力高' },
+    { name: '千房大阪烧 道顿堀本店', lat: 34.6690, lng: 135.5008, type: 'food', time: '18:00', desc: '晚餐主推：现做大阪烧老字号', budget: '人均 1,500–2,500円', pay: { cash: 1, card: 1 }, gmap: 'Chibo+Dotonbori', xhsKeyword: '千房 大阪烧' },
+    { name: '一兰拉面 道顿堀店', lat: 34.6691, lng: 135.5023, type: 'food', time: '—', desc: '备选：24小时，错峰去不排队', budget: '人均 1,000円', gmap: 'Ichiran+Dotonbori', xhsKeyword: '一兰拉面 道顿堀' },
+    { name: '金龙拉面', lat: 34.6689, lng: 135.5019, type: 'food', time: '—', desc: '备选宵夜：24小时，自助机点餐', pay: { cash: 1, card: 0 }, detail: '只收现金。辣韭菜自助随便加。', gmap: 'Kinryu+Ramen+Dotonbori' },
+    { name: '唐吉诃德摩天轮', lat: 34.6693, lng: 135.5031, type: 'spot', time: '—', desc: '备选：道顿堀夜景，22:00前截止', budget: '600円', gmap: 'Don+Quijote+Dotonbori+Ferris+Wheel' }
+  ]},
+  { id: 2, label: 'D2 大阪', date: '12/20 周日', title: '大阪城 · 中崎町 · 梅田夜景', color: '#ff2d55', locations: [
+    { name: '大阪城天守阁', lat: 34.6873, lng: 135.5262, type: 'spot', time: '09:00', desc: '开门就进人最少，公园+天守阁约2小时', budget: '天守阁 600円', detail: '9:00开门。雨雪天可改博物馆或商场。', gmap: 'Osaka+Castle' },
+    { name: '黑门市场', lat: 34.6653, lng: 135.5064, type: 'food', time: '12:00', desc: '午餐逛吃：小吃摊为主', detail: '避雷：高价海鲜丼刺客多，本地人更推荐木津市场。逛吃小吃即可，别在市场吃正餐大丼。', pay: { cash: 1, card: 0.5 }, gmap: 'Kuromon+Ichiba+Market', xhsKeyword: '黑门市场 避雷' },
+    { name: '中崎町昭和老街', lat: 34.7075, lng: 135.5052, type: 'spot', time: '14:30', desc: '百年老宅咖啡巡礼：OSA COFFEE、Salon de AManTo', detail: '梅田站步行10分钟。文艺小店+古着+咖啡，慢逛2小时。', gmap: 'Nakazakicho+Osaka', xhsKeyword: '中崎町 咖啡' },
+    { name: '堀江橘子街→美国村', lat: 34.6717, lng: 135.4946, type: 'spot', time: '—', desc: '备选：替换中崎町的潮流小店线，一路走到心斋桥道顿堀', detail: 'YOLABO大阪Citywalk地图路线④：堀江橘子街→美国村→心斋桥→道顿堀。购物时间留宽。', gmap: 'Orange+Street+Horie+Osaka', xhs: 'https://www.xiaohongshu.com/explore/6ad97caf00000000310355fa' },
+    { name: '中之岛美术馆+北滨咖啡', lat: 34.6919, lng: 135.5023, type: 'spot', time: '—', desc: '备选：美术馆+老建筑+河岸线，下午更松', detail: 'YOLABO路线②：中之岛美术馆→中央公会堂→中之岛公园→北滨。挑一处看展或北滨喝咖啡。', gmap: 'Nakanoshima+Museum+of+Art+Osaka' },
+    { name: '梅田蓝天大厦 空中庭园', lat: 34.7053, lng: 135.4900, type: 'spot', time: '16:15', desc: '锚点：日落约16:50，提前买票预约日落时段', budget: '约 2,000円', detail: '天气差备选：阿倍野Harukas（日本第一高楼）或梅田商场。', gmap: 'Umeda+Sky+Building', xhsKeyword: '梅田蓝天大厦 日落' },
+    { name: '阪神百货B1美食街', lat: 34.7013, lng: 135.4980, type: 'food', time: '18:30', desc: '晚餐主推：平价海鲜丼，几十块人民币吃饱', budget: '人均 1,000–2,000円', gmap: 'Hanshin+Department+Store+Umeda', xhsKeyword: '阪神百货 海鲜丼' },
+    { name: '银座篝 LUCUA梅田', lat: 34.7025, lng: 135.4959, type: 'food', time: '—', desc: '备选：米其林鸡白汤拉面，会排队', budget: '人均 1,500–2,500円', gmap: 'Ginza+Kagari+Lucua+Osaka' }
+  ]},
+  { id: 3, label: 'D3 大阪', date: '12/21 周一', title: '弹性日 · USJ 或 新世界', color: '#af52de', locations: [
+    { name: '日本环球影城 USJ', lat: 34.6654, lng: 135.4323, type: 'spot', time: '08:30', desc: '方案A（推荐）：周一人少于周末，全天锚点', budget: '门票约 8,600円起 + 快速券', detail: '必须提前买门票+快速通行券；任天堂园区需整理券（App抽）。圣诞周仍是旺季，开园前到。', reserve: 'https://www.usj.co.jp/ticket/', gmap: 'Universal+Studios+Japan', xhsKeyword: 'USJ 12月 攻略' },
+    { name: '新世界 · 通天阁', lat: 34.6522, lng: 135.5063, type: 'spot', time: '—', desc: '方案B：不去USJ的轻松版，上午来', budget: '通天阁约 1,200円', gmap: 'Tsutenkaku+Shinsekai' },
+    { name: '元祖串炸だるま 新世界', lat: 34.6524, lng: 135.5060, type: 'food', time: '—', desc: '方案B午餐：串炸蘸酱只能蘸一次', budget: '人均 1,500–2,000円', gmap: 'Kushikatsu+Daruma+Shinsekai', xhsKeyword: '元祖串炸 达摩' },
+    { name: '蟹道乐 道顿堀本店', lat: 34.6688, lng: 135.5013, type: 'food', time: '18:30', desc: '晚餐：全蟹宴，提前官网/平台订位', budget: '晚市人均 8,000–12,000円；午市便宜约30%', pay: { cash: 1, card: 1 }, detail: '现场排队2小时起，务必订位。订不到→松阪牛烧肉M法善寺横丁店。', gmap: 'Kani+Doraku+Dotonbori', xhsKeyword: '蟹道乐 本店 预约' },
+    { name: '松阪牛烧肉M 法善寺店', lat: 34.6680, lng: 135.5020, type: 'food', time: '—', desc: '备选晚餐：三大和牛烧肉', budget: '人均 6,000–10,000円', gmap: 'Matsusakagyu+Yakiniku+M+Hozenji' }
+  ]},
+  { id: 4, label: 'D4 移动', date: '12/22 周二', title: '飞新千岁 → 特急直奔函馆', color: '#007aff', locations: [
+    { name: '关西机场 → 新千岁（航班）', lat: 34.4320, lng: 135.2304, type: 'transport', time: '09:30', desc: '订9:00–10:30起飞班次，约2小时', detail: '乐桃/捷星从KIX；JAL/ANA多从伊丹ITM出发，别订错机场。中段机票现在就订。', gmap: 'Kansai+International+Airport' },
+    { name: '新千岁机场午餐', lat: 42.7752, lng: 141.6925, type: 'food', time: '12:00', desc: 'GARAKU机场分店汤咖喱 / えびそば一幻虾拉面', budget: '人均 1,200–1,800円', gmap: 'New+Chitose+Airport', xhsKeyword: '新千岁机场 美食' },
+    { name: 'JR特急北斗 → 函馆', lat: 42.7752, lng: 141.6925, type: 'transport', time: '13:00', desc: '约3.5小时，指定席提前订，17:00前到函馆', detail: '冬季可能延误，今天不排锚点。到得晚就只吃饭睡觉。', gmap: 'Hakodate+Station' },
+    { name: '函馆站前酒店（待订）', lat: 41.7736, lng: 140.7264, type: 'hotel', time: '17:00', desc: '住函馆站前，2晚（22–23日），朝市横丁都在步行圈', gmap: 'Hakodate+Station' },
+    { name: '大门横丁', lat: 41.7723, lng: 140.7286, type: 'food', time: '18:30', desc: '晚餐：20多家居酒屋小摊，深夜食堂氛围', budget: '人均 2,000–3,500円', pay: { cash: 1, card: 0.5 }, detail: '函馆站步行5分钟。店小店多，到得晚也不愁吃。', gmap: 'Daimon+Yokocho+Hakodate', xhsKeyword: '函馆 大门横丁' }
+  ]},
+  { id: 5, label: 'D5 函馆', date: '12/23 周三', title: '朝市 · 元町 · 函馆山夜景', color: '#5856d6', locations: [
+    { name: '函馆朝市', lat: 41.7730, lng: 140.7250, type: 'food', time: '08:00', desc: '早餐海鲜丼，9点前人少；先问价再下单', budget: '海鲜丼 2,000–4,000円', pay: { cash: 1, card: 0.5 }, detail: '6:00开市，多数店中午打烊。部分摊位喊价制，跟着排队人多的摊位走。', gmap: 'Hakodate+Morning+Market', xhsKeyword: '函馆朝市 推荐' },
+    { name: '八幡坂 · 元町教会群', lat: 41.7658, lng: 140.7137, type: 'spot', time: '10:00', desc: '坡道尽头是海，函馆最出片机位', detail: '市电到十字街/末广町。东正教堂冬季圣堂不开放，看外观。坡道结冰慢走。', gmap: 'Hachiman+zaka+Hakodate', xhsKeyword: '八幡坂 拍照' },
+    { name: '金森红砖仓库', lat: 41.7668, lng: 140.7175, type: 'spot', time: '12:00', desc: '午餐+逛仓库群（9:30–19:00），顺路幸运小丑汉堡', detail: '今晚回来看点灯：圣诞梦幻节海上圣诞树，往年18:00点灯+烟花，到12/25。午餐也可选仓库旁 California Baby（你收藏的YOLABO函馆地图推荐）。', gmap: 'Kanemori+Red+Brick+Warehouse', xhsKeyword: '金森红砖仓库 圣诞', xhs: 'https://www.xiaohongshu.com/explore/6ae7252c000000000e02e009' },
+    { name: '摩周丸 旧联络船', lat: 41.7749, lng: 140.7238, type: 'spot', time: '—', desc: '备选：朝市后顺路，站西侧港边步行几分钟', gmap: 'Mashu+Maru+Hakodate' },
+    { name: '函馆山缆车 · 百万夜景', lat: 41.7593, lng: 140.7139, type: 'spot', time: '15:30', desc: '锚点：16:00天黑即夜景，17:30前下山', budget: '缆车往返 1,800円', detail: '冬季营业10:00–21:00，上山末班20:30。山顶极冷风大，全套保暖。大风会停运——当天16:00前查官网 334.co.jp 运行状况；停运则改八幡坂+仓库点灯。', reserve: 'https://334.co.jp/chs/', gmap: 'Mt+Hakodate+Ropeway', xhsKeyword: '函馆山夜景 冬季' },
+    { name: '味彩盐味拉面（五稜郭）', lat: 41.7955, lng: 140.7539, type: 'food', time: '18:30', desc: '晚餐主推：函馆盐味拉面代表', budget: '人均 1,000–1,500円', gmap: 'Ajisai+Ramen+Goryokaku', xhsKeyword: '函馆 盐味拉面 味彩' },
+    { name: '五稜郭塔 · 五棱星之梦', lat: 41.7968, lng: 140.7541, type: 'spot', time: '—', desc: '备选：体力好才加，星形城郭冬季点灯到19:00', budget: '塔约 1,000円', detail: '与主线不同方向，默认砍。要去就压缩元町时间。', gmap: 'Goryokaku+Tower' },
+    { name: '热带植物园 猴子泡汤', lat: 41.7823, lng: 140.7864, type: 'spot', time: '—', desc: '备选：冬季限定猴子温泉（12月起）', budget: '300円', detail: '汤之川方向，9:30–16:30。天冷才放猴子泡汤，去前查园方公告。', gmap: 'Hakodate+Tropical+Botanical+Garden' }
+  ]},
+  { id: 6, label: 'D6 登别', date: '12/24 周四', title: '平安夜 · 地狱谷 · 温泉旅馆', color: '#34c759', locations: [
+    { name: 'JR特急北斗 函馆→登别', lat: 41.7736, lng: 140.7264, type: 'transport', time: '10:30', desc: '约2.5小时，13:30前后到登别站', gmap: 'Noboribetsu+Station' },
+    { name: '登别温泉旅馆（待订·最优先）', lat: 42.4935, lng: 141.1442, type: 'hotel', time: '14:00', desc: '平安夜一泊二食：怀石晚餐+雪见温泉', detail: '参考：第一滝本馆（35池大浴场直面地狱谷）／登别Grand Hotel。订不到退mahoroba。全程唯一必须提前订死的住宿，现在就订。', gmap: 'Daiichi+Takimotokan+Noboribetsu', xhsKeyword: '登别 第一滝本馆' },
+    { name: '地狱谷雪中步道', lat: 42.4970, lng: 141.1470, type: 'spot', time: '14:30', desc: '火山口遗迹蒸汽+白雪，15:30前走完', detail: '步道结冰，防滑鞋刚需。雪大只走观景台段。大汤沼方向有免费足汤。', gmap: 'Jigokudani+Noboribetsu', xhsKeyword: '登别 地狱谷 冬季' },
+    { name: '大汤沼川 天然足汤', lat: 42.5015, lng: 141.1445, type: 'spot', time: '—', desc: '备选：雪中溪谷泡脚，带小毛巾', gmap: 'Oyunumagawa+Natural+Footbath' }
+  ]},
+  { id: 7, label: 'D7 札幌', date: '12/25 周五', title: '圣诞夜 · 大通灯海 · 薄野', color: '#ff375f', locations: [
+    { name: 'JR特急 登别→札幌', lat: 42.4935, lng: 141.1442, type: 'transport', time: '10:30', desc: '晨汤后再泡一次，约1h15m，12:00前后到札幌', gmap: 'Sapporo+Station' },
+    { name: '奥芝商店 駅前創成寺', lat: 43.0672, lng: 141.3505, type: 'food', time: '12:30', desc: '午餐：虾高汤汤咖喱，札幌站地下直通不走雪地', budget: '人均 1,500–2,000円', pay: { cash: 1, card: 0.5 }, detail: '不能预约，避开正饭点。招牌海老だし+软烂大鸡腿。', gmap: 'Okushiba+Shoten+Sapporo', xhsKeyword: '奥芝商店 汤咖喱' },
+    { name: '札幌酒店（待订）', lat: 43.0630, lng: 141.3540, type: 'hotel', time: '14:00', desc: '住札幌站—大通之间，2晚（25–26日）', detail: '选址原则：地铁站步行8分钟内，出门就是灯海和狸小路。', gmap: 'Odori+Station+Sapporo' },
+    { name: '狸小路商店街', lat: 43.0568, lng: 141.3486, type: 'spot', time: '14:30', desc: '900米全顶棚商店街，下雪不怕，药妆伴手礼', detail: '药妆最晚23:00，伴手礼店21:00–22:00关。地下街POLE TOWN连通大通—薄野。', gmap: 'Tanukikoji+Shopping+Street', xhsKeyword: '狸小路 必买' },
+    { name: 'Stella Place + 大丸（札幌站）', lat: 43.0680, lng: 141.3510, type: 'spot', time: '—', desc: '备选：只逛一个商场就选它，有吃有逛与大丸连通', detail: '你收藏的购物结算笔记：mont-bell在札幌站地下街通道（落地缺羽绒/防滑装备当场补）；aoao水族馆萌物周边好买。伴手礼留到机场安检后买（免税且全）：札幌农学院、GARAKU汤咖喱料理包。', gmap: 'Stellar+Place+Sapporo', xhs: 'https://www.xiaohongshu.com/explore/6af5281a0000000009020943' },
+    { name: '红砖旧道厅+钟楼+电视塔', lat: 43.0642, lng: 141.3469, type: 'spot', time: '—', desc: '备选：经典建筑串一段，狸小路前后顺路', detail: 'YOLABO札幌地图路线②：红砖旧道厅（2025年重新开放）→钟楼→电视塔，途经大通东段。电视塔圣诞季亮灯到24:00。', gmap: 'Former+Hokkaido+Government+Office', xhs: 'https://www.xiaohongshu.com/explore/6add79bf0000000031038f04' },
+    { name: '大通公园 白色灯树节+慕尼黑圣诞市集', lat: 43.0606, lng: 141.3520, type: 'spot', time: '16:30', desc: '锚点：圣诞市集最后一天！热红酒约800円+德式香肠+灯海', detail: '市集在大通2丁目，往年到12/25（11:00–21:00）。马克杯套餐1,700–1,900円可留念；电视塔亮灯到24:00，塔下巨型圣诞树同框机位。雪夜走地下街POLE TOWN连通狸小路—大通—薄野。只此一晚，别错过。', gmap: 'Odori+Park+Sapporo+White+Illumination', xhsKeyword: '札幌 慕尼黑圣诞市集', xhs: 'https://www.xiaohongshu.com/explore/6ada2675000000003103be08' },
+    { name: '蟹工船 薄野', lat: 43.0550, lng: 141.3540, type: 'food', time: '—', desc: '备选晚餐：螃蟹+海鲜丼红色大楼，建议预约', budget: '人均 5,000–10,000円', detail: '午11:30–15:00 / 晚17:00–22:30（L.O.21:00），周日及节假日提前打烊。12/25是周五，营业正常。', gmap: 'Kani+Kousen+Susukino', xhsKeyword: '札幌 蟹工船' },
+    { name: '成吉思汗だるま 本店', lat: 43.0547, lng: 141.3532, type: 'food', time: '18:30', desc: '晚餐主推：1954年炭火烤羊肉，17:00开', budget: '人均 3,000–4,500円', pay: { cash: 1, card: 0.5 }, detail: '本店14席不能预约、常排长队；排不动换4.4店（中午就开、可刷卡）或Suage+。', gmap: 'Daruma+Genghis+Khan+Susukino', xhsKeyword: '札幌 达摩 成吉思汗' },
+    { name: 'Suage+ 汤咖喱', lat: 43.0553, lng: 141.3529, type: 'food', time: '—', desc: '备选晚餐：炭烤脆皮鸡汤咖喱', budget: '人均 1,500–2,000円', pay: { cash: 1, paypay: 1, card: 0 }, detail: '只收现金和PayPay，不收信用卡。隔壁Suage2可分流。', gmap: 'Suage+Soup+Curry+Susukino' },
+    { name: 'パフェ、珈琲、酒、佐藤', lat: 43.0576, lng: 141.3535, type: 'food', time: '—', desc: '备选收尾：札幌夜圣代文化しめパフェ', budget: '圣代约 2,000円起', gmap: 'Parfait+Coffee+Sake+Sato+Sapporo', xhsKeyword: '佐藤 夜圣代 札幌' },
+    { name: '麺屋すみれ 薄野店', lat: 43.0542, lng: 141.3520, type: 'food', time: '—', desc: '备选宵夜：浓厚味噌拉面，最后点餐24:00', pay: { cash: 1, card: 0 }, gmap: 'Sumire+Ramen+Susukino' }
+  ]},
+  { id: 8, label: 'D8 小樽', date: '12/26 周六', title: '小樽运河 · 青之点灯', color: '#00c7be', locations: [
+    { name: 'JR快速 札幌→小樽', lat: 43.0686, lng: 141.3508, type: 'transport', time: '09:00', desc: '约35分钟。暴雪可能停运/延误，出门查运行情报', gmap: 'Otaru+Station' },
+    { name: '钱函站海边（中途下车）', lat: 43.1445, lng: 141.1104, type: 'spot', time: '—', desc: '备选：札幌→小樽途中，晴天可下车拍海再上下一班', detail: '车次多不用急。阴天/雪天直接跳过（你收藏的情侣攻略推荐，仅晴天值得）。', gmap: 'Zenibako+Station', xhs: 'https://www.xiaohongshu.com/explore/6a9a4927000000000d02579d' },
+    { name: '船见坂', lat: 43.1953, lng: 140.9973, type: 'spot', time: '09:45', desc: '《情书》同款坡道，坡顶望海。晴天去才出片，阴天普通', detail: '雪后路面滑，靠边走，别站车道中间拍照。', gmap: 'Funamizaka+Otaru', xhsKeyword: '小樽 船见坂', xhs: 'https://www.xiaohongshu.com/explore/6ad9f946000000002c0271dd' },
+    { name: '堺町通 · LeTAO本店', lat: 43.1908, lng: 141.0078, type: 'spot', time: '11:00', desc: '甜点老街：LeTAO双层芝士蛋糕、北菓楼泡芙、六花亭、音乐盒堂', budget: '下午茶人均 1,000–1,500円', gmap: 'LeTAO+Main+Store+Otaru', xhsKeyword: '小樽 堺町通 LeTAO' },
+    { name: '政寿司 本店', lat: 43.1932, lng: 141.0056, type: 'food', time: '12:30', desc: '午餐主推：小樽寿司名店，人多改运河边海鲜丼', budget: '人均 3,000–6,000円', gmap: 'Masazushi+Otaru', xhsKeyword: '小樽 政寿司' },
+    { name: '商业街印度咖喱小店', lat: 43.1920, lng: 141.0060, type: 'food', time: '—', desc: '备选：walk in便宜好吃，吃腻清淡日料时的暖身救赎', detail: '你收藏的笔记作者两次去吃（咖喱汤+印度菜都好评）。冰天雪地来碗浓郁咖喱汤。具体店名笔记未写，商业街现场随缘。', gmap: 'Otaru+Sakaimachi+curry', xhs: 'https://www.xiaohongshu.com/explore/6aeb065500000000070033be' },
+    { name: '运河硝子馆 玻璃饰品', lat: 43.1975, lng: 141.0035, type: 'spot', time: '—', desc: '备选：玻璃项链伴手礼，笔记作者果断带走款', gmap: 'Otaru+Glass+Shop+Canal', xhs: 'https://www.xiaohongshu.com/explore/6aeb065500000000070033be' },
+    { name: '小樽运河 · 青之运河点灯', lat: 43.1988, lng: 141.0025, type: 'spot', time: '15:30', desc: '锚点：日落约16:00点灯，浅草桥机位，16:30–17:00回程', detail: '点灯日落后–22:30。蓝色LED+煤气灯+雪，天黑前到占机位。可选夜间运河游船（需预约）。', gmap: 'Otaru+Canal', xhsKeyword: '小樽 青之运河 点灯' },
+    { name: '天狗山缆车（《初恋》取景）', lat: 43.1667, lng: 140.9744, type: 'spot', time: '—', desc: '备选：与运河点灯二选一，要去就15:00前上山', detail: '2026年11/4–27检修停运，12月应已恢复——出发前查官网。傍晚下山缆车排队可达1小时且室外极冷；蓝调看完立刻排队。默认仍推运河点灯（免排队）。小樽站前4号站台乘9路巴士到山麓。JR小樽站有缆车+市内交通套票：停运可退款但窗口关门就退不了，发现停运尽早退。', gmap: 'Tenguyama+Ropeway+Otaru', xhs: 'https://www.xiaohongshu.com/explore/6ad9f946000000002c0271dd' },
+    { name: '白色恋人公园 点灯', lat: 43.0813, lng: 141.2717, type: 'spot', time: '—', desc: '备选：回程宫之泽下车，16:00–19:00免费庭院点灯', detail: '2026年50周年主题。收费区票亭16:30截止。周六人多，累就弃，直接回薄野吃饭。', gmap: 'Shiroi+Koibito+Park', xhsKeyword: '白色恋人公园 点灯' },
+    { name: 'HARD OFF / BOOK OFF 中古店', lat: 43.0790, lng: 141.2600, type: 'spot', time: '—', desc: '备选：白色恋人旁1–1.5km，逛中古随缘不专程', detail: '你收藏的中古店笔记：HARD OFF包鞋少而精（作者Burberry+Prada两双不到300RMB）；BOOK OFF更大、奢牌专区可试、有二手游戏机。期待放低，顺路才去。', gmap: 'Hard+Off+Sapporo+Miyanosawa', xhs: 'https://www.xiaohongshu.com/explore/6afc9959000000002b03d82f' },
+    { name: '小樽夜间运河游船', lat: 43.1985, lng: 141.0030, type: 'spot', time: '—', desc: '备选：点灯时段乘船看运河，需预约', gmap: 'Otaru+Canal+Cruise' },
+    { name: '高速巴士回札幌（JR备份）', lat: 43.1971, lng: 140.9942, type: 'transport', time: '—', desc: '备选：小樽站前1号站台→札幌站，比JR便宜', detail: '暴雪JR停运时的可靠备份（你收藏笔记博主实测）。中间多站，终点札幌站。', gmap: 'Otaru+Station+Bus+Terminal' },
+    { name: '薄野晚餐（だるま/Suage+/拉面横丁）', lat: 43.0547, lng: 141.3532, type: 'food', time: '19:00', desc: '回札幌吃：昨天没吃到的那家今晚补', gmap: 'Susukino+Sapporo' }
+  ]},
+  { id: 9, label: 'D9 回程', date: '12/27 周日', title: '二条市场 · 新千岁回国', color: '#8e8e93', locations: [
+    { name: '二条市场 大磯', lat: 43.0596, lng: 141.3593, type: 'food', time: '08:00', desc: '早餐海鲜丼：大磯丼2,500円、海胆丼4,260円起', pay: { cash: 1, card: 0.5 }, detail: '7:30开门，周三休、周日营业。30种以上丼饭可选。', gmap: 'Ohiso+Nijo+Market', xhsKeyword: '二条市场 大矶' },
+    { name: '北海道神宫', lat: 43.0541, lng: 141.3079, type: 'spot', time: '09:30', desc: '可选：雪中参拜+圆山公园，雪大改狸小路补货', gmap: 'Hokkaido+Jingu', xhsKeyword: '北海道神宫 雪' },
+    { name: '中岛公园 玩雪', lat: 43.0442, lng: 141.3540, type: 'spot', time: '—', desc: '备选：离薄野更近的玩雪轻活动，可平替神宫', detail: '你收藏的情侣攻略高评价项。地铁南北线中岛公园站即达，顺路不绕。', gmap: 'Nakajima+Park+Sapporo', xhs: 'https://www.xiaohongshu.com/explore/6a9a4927000000000d02579d' },
+    { name: '北大校园+银杏林道', lat: 43.0770, lng: 141.3430, type: 'spot', time: '—', desc: '备选：雪景校园，札幌站步行可达', detail: 'YOLABO札幌地图路线①：北大正门→克拉克胸像→综合博物馆→银杏林道。只走开放区域。', gmap: 'Hokkaido+University', xhs: 'https://www.xiaohongshu.com/explore/6add79bf0000000031038f04' },
+    { name: '机场伴手礼（安检后买）', lat: 42.7880, lng: 141.6810, type: 'spot', time: '—', desc: '要点：札幌农学院、GARAKU汤咖喱料理包，免税且全', detail: '你收藏的购物结算笔记：伴手礼不用市区背，过安检后应有尽有还免税。看到想买的一点犹豫就拿下，回来后悔率高。', gmap: 'New+Chitose+Airport+Shopping' },
+    { name: 'JR快速Airport → 新千岁', lat: 43.0686, lng: 141.3508, type: 'transport', time: '11:30', desc: '33–40分钟。国际线提前3小时到机场', detail: '按15:00–16:00起飞口径，12:00–13:00到机场刚好。今天不排远点。', gmap: 'Sapporo+Station' },
+    { name: '新千岁机场', lat: 42.7752, lng: 141.6925, type: 'transport', time: '12:30', desc: '机场好逛：哆啦A梦乐园、巧克力工厂、伴手礼+最后一碗拉面', detail: '白色恋人/六花亭/北菓楼机场都有，市区没买齐这里补。', gmap: 'New+Chitose+Airport' }
+  ]}
+];
+
+// ══════════ 本地删减（localStorage，仅本设备浏览器生效） ══════════
+const CUT_KEY = 'tripmap-cuts-1219';
+let cuts = new Set();
+try { cuts = new Set(JSON.parse(localStorage.getItem(CUT_KEY) || '[]')); } catch(e) {}
+function saveCuts() { try { localStorage.setItem(CUT_KEY, JSON.stringify([...cuts])); } catch(e) {} updateCutsTab(); }
+function isCut(dayId, name) { return cuts.has(`${dayId}::${name}`); }
+function cutLoc(dayId, name) {
+  cuts.add(`${dayId}::${name}`); saveCuts();
+  contentEl.innerHTML = cur===0 ? overviewContent() : renderDay(cur);
+  showDay(cur);
+}
+function restoreLoc(dayId, name) {
+  cuts.delete(`${dayId}::${name}`); saveCuts();
+  contentEl.innerHTML = cur===0 ? overviewContent() : renderDay(cur);
+  showDay(cur);
+}
+function restoreAll() {
+  if(!cuts.size) return;
+  if(!confirm('恢复全部已删减的项目？')) return;
+  cuts.clear(); saveCuts(); go(cur);
+}
+function showCuts() { go('cuts'); }
+function cutList() {
+  const items = [];
+  DAYS.forEach(d => d.locations.forEach(l => { if(isCut(d.id, l.name)) items.push({d, l}); }));
+  return items;
+}
+function cutsContent() {
+  const items = cutList();
+  let h = `<div class="day-head"><h2>已删减的项目</h2><p>共 ${items.length} 项 · 只存在本机浏览器，可随时恢复</p></div>`;
+  if(!items.length) return h + '<div class="pay-summary">还没有删减任何项目。在行程卡片上点「✕ 删减」即可移除。</div>';
+  h += items.map(({d,l}) => `<div class="cut-item"><div><div class="ci-day">${d.label} · ${l.time!=='—'?l.time:'备选'}</div><div class="ci-name">${l.name}</div></div><button class="btn restore" onclick="restoreLoc(${d.id},'${l.name.replace(/'/g,"\\'")}')">↩ 恢复</button></div>`).join('');
+  h += `<div style="text-align:center;padding:14px 0"><button class="btn restore" onclick="restoreAll()">全部恢复</button></div>`;
+  return h;
+}
+
+function overviewContent() {
+  return `
+<div class="hero"><h1>大阪 · 北海道 9日</h1><p class="subtitle">2026/12/19 – 12/27 · 两人 · 雪季圣诞线</p></div>
+<div class="info-grid">
+  <div class="info-card"><div class="label">住宿</div><div class="value">难波3晚 → 函馆2晚 → 登别1晚 → 札幌2晚</div></div>
+  <div class="info-card"><div class="label">机票（待订）</div><div class="value">19日午到KIX · 22日早飞CTS · 27日午后CTS回</div></div>
+  <div class="info-card"><div class="label">北海道动线</div><div class="value">新千岁→函馆→登别→札幌 单向不回头</div></div>
+  <div class="info-card"><div class="label">天黑时间</div><div class="value">北海道16:00 · 大阪16:50<br>户外排15:30前</div></div>
+</div>
+<div class="section-head">行程概览</div>
+<div class="day-list">${DAYS.slice(1).map(d=>`<div class="card" onclick="go(${d.id})"><div class="name"><span class="dot" style="background:${d.color}"></span>${d.label} · ${d.title}</div><div class="desc">${d.date}</div></div>`).join('')}</div>
+<div class="section-head">待选池</div>
+<div class="pay-summary"><h4>🗂️ 全部候选已按天摆进各标签页的「备选」区</h4>主行程是默认骨架，备选到当天按天气/体力/心情勾选，不勾就自然放弃。<span class="warn">每张卡片有「✕ 删减」按钮</span>：点掉即从时间轴和地图移除，记录只存在本机浏览器（换设备/发给别人不带走），顶部「已删减」标签页可随时恢复。完整候选清单（含来源笔记）见文字版行程文档「待选池」一节。⭐多人背书的：堀江橘子街、蟹工船、Stella Place、mont-bell、钱函海岸、天狗山、高速巴士备份、北菓楼泡芙、机场安检后买伴手礼。</div>
+<div class="section-head">来自你的小红书收藏</div>
+<div class="pay-summary"><h4>📕 已并入「北海道」专辑要点（33条笔记）</h4>· 圣诞市集：热红酒800円/马克杯套餐约1,800円，电视塔亮灯到24:00<br>· 雪夜走地下街POLE TOWN：狸小路—大通—薄野免挨冻<br>· D8小樽：钱函站晴天中途下车拍海；天狗山与运河点灯二选一（下山排队1h警告）<br>· 船见坂晴天去才出片；祝津海岸支线冬季关闭不去<br>· JR Pass：有函馆段必回本→买北海道5日券；小樽回程有高速巴士备份<br>· 相关卡片已挂原笔记链接（📕按钮）</div>
+<div class="section-head">现在就要订</div>
+<div class="pay-summary"><h4>📅 预订清单（按紧急度）</h4>1. 机票三段：12/19到KIX、12/22 KIX→CTS早班、12/27 CTS→国内午后班<br>2. <span class="warn">登别温泉旅馆12/24平安夜一泊二食（最紧俏）</span><br>3. 酒店：难波3晚、函馆站前2晚、札幌站—大通2晚<br>4. USJ 12/21门票+快速券（去USJ才买）<br>5. 蟹道乐12/21晚订位 · 梅田空中庭园12/20日落票<br>6. <span class="ok-text">北海道铁路周游券5日券</span>约21,000円/人（12/22–26，含函馆段必回本；单买三段指定席约20,500円还不含小樽）；圣诞周提前官网划指定席</div>
+<div class="section-head">支付与现金提醒</div>
+<div class="pay-summary"><h4>💴 每天带1–2万円现金</h4><span class="warn">只收现金/PayPay：</span>Suage+、金龙拉面、麺屋すみれ、朝市多数摊位<br><span class="ok-text">可刷卡：</span>大商场、便利店、蟹道乐、连锁餐厅<br>支付宝/微信覆盖不稳定，别依赖。交通用Suica/ICOCA（手机可开）。</div>
+<div class="pay-summary"><h4>❄️ 雪季提醒</h4>防滑防水靴刚需 · 帽手套围巾焊身上 · 手机贴暖宝宝<br><span class="warn">函馆山缆车大风停运</span>：当天16:00前查 334.co.jp<br>暴雪JR小樽线可能延误：D8出门查运行情报，备选札幌市内</div>
+<div class="section-head">图例</div>
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--tint-red)"></div>餐厅</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--tint-blue)"></div>景点</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--tint-purple)"></div>酒吧</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--tint-orange)"></div>酒店</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--text-tertiary)"></div>交通</div>
+</div>`;
+}
+
+// ══════════ ENGINE ══════════
+const map = L.map('map', { center: [HOTEL.lat, HOTEL.lng], zoom: 12, zoomControl: false, attributionControl: true });
+L.control.zoom({ position: 'topright' }).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
+
+const LocateControl = L.Control.extend({
+  options: { position: 'bottomright' },
+  onAdd() {
+    const btn = L.DomUtil.create('button', 'locate-btn');
+    btn.innerHTML = '📍';
+    btn.title = '我的位置';
+    L.DomEvent.disableClickPropagation(btn);
+    btn.addEventListener('click', () => {
+      btn.classList.add('active');
+      map.locate({ setView: true, maxZoom: 15 });
+    });
+    this._btn = btn;
+    return btn;
+  }
+});
+new LocateControl().addTo(map);
+let locMarker, locCircle;
+map.on('locationfound', e => {
+  const r = e.accuracy / 2;
+  if (locMarker) { locMarker.setLatLng(e.latlng); locCircle.setLatLng(e.latlng).setRadius(r); }
+  else {
+    locMarker = L.marker(e.latlng, {
+      icon: L.divIcon({ className:'', html:'<div style="width:14px;height:14px;border-radius:50%;background:#007aff;border:2.5px solid #fff;box-shadow:0 0 6px rgba(0,122,255,.5)"></div><div class="loc-pulse" style="position:absolute;top:0;left:0"></div>', iconSize:[14,14], iconAnchor:[7,7] }),
+      zIndexOffset: 2000
+    }).addTo(map);
+    locCircle = L.circle(e.latlng, { radius: r, color: '#007aff', fillColor: '#007aff', fillOpacity: .08, weight: 1 }).addTo(map);
+  }
+});
+map.on('locationerror', () => {});
+
+function icon(color, emoji) {
+  return L.divIcon({ className: '', html: `<div style="width:28px;height:28px;border-radius:50%;background:${color};border:2.5px solid #fff;display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.18)">${emoji||''}</div>`, iconSize: [28,28], iconAnchor: [14,14], popupAnchor: [0,-16] });
+}
+
+let markers = [], polylines = [];
+const emojis = { food:'🍽️', spot:'📍', hotel:'🏨', transport:'🚃', drink:'🍺' };
+
+let routeLayer = null, routeToken = 0;
+function clearMap() {
+  markers.forEach(m=>map.removeLayer(m)); polylines.forEach(p=>map.removeLayer(p)); markers=[]; polylines=[];
+  if(routeLayer) { map.removeLayer(routeLayer); routeLayer = null; }
+  routeToken++;
+}
+
+// ══════════ OSRM 路线（相邻锚点间；步行+驾车，跨城/航班段自动跳过） ══════════
+const ROUTE_GAP_KM = 5;
+function distKm(a, b) {
+  const R = 6371, dLat = (b[0]-a[0])*Math.PI/180, dLng = (b[1]-a[1])*Math.PI/180;
+  const s = Math.sin(dLat/2)**2 + Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.sin(dLng/2)**2;
+  return 2*R*Math.asin(Math.sqrt(s));
+}
+function fmtDur(sec) { const m = Math.round(sec/60); return m>=60 ? `${Math.floor(m/60)}h${m%60?m%60+'m':''}` : `${m}分钟`; }
+function fmtDist(m) { return m>=1000 ? `${(m/1000).toFixed(1)}km` : `${Math.round(m)}m`; }
+async function drawRoutes(day) {
+  const token = ++routeToken;
+  const stops = day.locations.filter(l=>l.time!=='—' && l.lat && !isCut(day.id,l.name));
+  const walkLegs = [], driveLegs = [];
+  for(let i=0;i<stops.length-1;i++) {
+    const a=[stops[i].lat,stops[i].lng], b=[stops[i+1].lat,stops[i+1].lng];
+    const km = distKm(a,b);
+    if(km > 200) continue; // 航班段
+    const leg = {from:stops[i], to:stops[i+1], a, b, km};
+    const viaTrain = stops[i].type==='transport' || stops[i+1].type==='transport';
+    if(viaTrain || km > ROUTE_GAP_KM) { if(km > 1.5) driveLegs.push(leg); }
+    else walkLegs.push(leg);
+  }
+  const box = document.getElementById('route-info');
+  if(!walkLegs.length && !driveLegs.length) { if(box) box.remove(); return; }
+  const group = L.layerGroup().addTo(map); routeLayer = group;
+  const rows = [];
+  const renderBox = () => { if(box) box.innerHTML = '<h4>🚶 路线与耗时（OSRM估算）</h4>' + (rows.join('')||'<span style="color:var(--text-tertiary)">计算中…</span>') + '<div class="note">步行雪天路滑上浮30–50%；🚗为驾车路况估算，标JR/地铁的段请以实际列车时刻为准（驾车时间仅看距离感）；冬季路况另加余量</div>'; };
+  renderBox();
+  const jobs = [
+    ...walkLegs.map(l=>({...l, mode:'foot', emoji:'🚶', color:'#007aff', draw:true})),
+    ...driveLegs.map(l=>({...l, mode:'car', emoji:'🚗', color:'#ff9500', draw:false}))
+  ];
+  for(const leg of jobs) {
+    try {
+      const url = `https://routing.openstreetmap.de/routed-${leg.mode}/route/v1/${leg.mode==='foot'?'foot':'driving'}/${leg.a[1]},${leg.a[0]};${leg.b[1]},${leg.b[0]}?overview=full&geometries=geojson`;
+      const r = await fetch(url).then(x=>x.json());
+      if(token!==routeToken) return;
+      if(r.code==='Ok' && r.routes[0]) {
+        const rt = r.routes[0];
+        if(leg.draw) L.polyline(rt.geometry.coordinates.map(c=>[c[1],c[0]]), { color:leg.color, weight:3.5, opacity:.85 }).addTo(group);
+        rows.push(`<div class="leg">${leg.emoji} ${leg.from.name} → ${leg.to.name}：<b>${fmtDist(rt.distance)} · ${fmtDur(rt.duration)}</b></div>`);
+        renderBox();
+      }
+    } catch(e) { /* 网络失败该段跳过 */ }
+    await new Promise(r=>setTimeout(r, 400));
+  }
+  if(token!==routeToken) return;
+  if(!rows.length && box) box.remove();
+}
+
+function showDay(idx) {
+  clearMap();
+  if (idx === 0) {
+    const pts = [];
+    DAYS.forEach(d => d.locations.forEach(l => { if(l.lat && !isCut(d.id,l.name)) pts.push([l.lat,l.lng]); }));
+    if(pts.length) map.fitBounds(pts, {padding:[30,30]});
+    DAYS.slice(1).forEach(d => {
+      d.locations.filter(l=>l.time!=='—' && !isCut(d.id,l.name)).forEach(l => {
+        const m = L.circleMarker([l.lat,l.lng], { radius:4, fillColor:d.color, color:'#fff', weight:1.5, fillOpacity:.9 }).addTo(map).bindPopup(`<b>${l.name}</b><br><span style="color:#86868b">${d.label}</span>`);
+        markers.push(m);
+      });
+    });
+    return;
+  }
+  const day = DAYS.find(d=>d.id===idx);
+  if(!day) return;
+  const coords = [];
+  day.locations.forEach(l => {
+    if(!l.lat || isCut(day.id,l.name)) return;
+    const m = L.marker([l.lat,l.lng], { icon: icon(day.color, emojis[l.type]||'📌') }).addTo(map);
+    const gmapQ = l.gmap||encodeURIComponent(l.name);
+    m.bindPopup(`<b>${l.name}</b>${l.time!=='—'?'<br><span style="color:#86868b">'+l.time+'</span>':''}<br>${l.desc}${l.budget?'<br><span style="color:#ff9500">'+l.budget+'</span>':''}<br><a href="#" onclick="event.preventDefault();openAS('${l.name.replace(/'/g,"\\'")}',${l.lat},${l.lng},'${gmapQ}')">📍 导航</a>`);
+    markers.push(m);
+    if(l.time!=='—') coords.push([l.lat,l.lng]);
+  });
+  if(coords.length>1) { const pl = L.polyline(coords, { color:day.color, weight:2.5, opacity:.5, dashArray:'6,5' }).addTo(map); polylines.push(pl); }
+  if(coords.length) map.fitBounds(coords, { padding:[40,40], maxZoom:14 });
+  drawRoutes(day);
+}
+
+function payChips(pay) {
+  if(!pay) return '';
+  let h = '<div class="pays">';
+  const m = { cash:'💴', card:'💳', suica:'Suica', paypay:'PayPay', alipay:'支付宝', wechat:'微信' };
+  for(const [k,label] of Object.entries(m)) {
+    if(pay[k]!==undefined) { const c = pay[k]===1?'ok':pay[k]===0.5?'idk':'no'; h += `<span class="pay ${c}">${label}</span>`; }
+  }
+  return h+'</div>';
+}
+
+const IN_APP_WEBVIEW = (() => {
+  const ua = (navigator.userAgent || '').toLowerCase();
+  return /micromessenger|xhs|xhsdiscover|discover\/|tiktok|aweme|weibo|qq\/|qqbrowser|alipayclient|dingtalk|lark|feishu|ucbrowser|baiduboxapp|toutiao|newsarticle/.test(ua);
+})();
+
+function xhsKeyword(loc) {
+  if(loc.xhsKeyword) return loc.xhsKeyword.trim();
+  return (loc.name||'').replace(/⭐.*$/g,'').replace(/（.*?）/g,'').replace(/\(.*?\)/g,'').replace(/\s+/g,' ').trim();
+}
+function xhsAppUrl(loc) { return `xhsdiscover://search/result?keyword=${encodeURIComponent(xhsKeyword(loc))}&target_search=notes&source=deeplink`; }
+function xhsWebUrl(loc) { return `https://www.xiaohongshu.com/search_result?keyword=${encodeURIComponent(xhsKeyword(loc))}&source=web_explore_feed`; }
+
+function dpKeyword(loc) {
+  if(loc.dianpingKeyword) return loc.dianpingKeyword.trim();
+  return (loc.name||'').replace(/⭐.*$/g,'').replace(/（.*?）/g,'').replace(/\(.*?\)/g,'').replace(/\s+/g,' ').trim();
+}
+function dpAppUrl(loc) { return `dianping://searchshoplist?keyword=${encodeURIComponent(dpKeyword(loc))}`; }
+function dpWebUrl(loc) { return `https://m.dianping.com/searchshop?keyword=${encodeURIComponent(dpKeyword(loc))}`; }
+
+window._extLocs = {};
+DAYS.forEach(d => d.locations.forEach(l => { window._extLocs[`${d.id}::${l.name}`] = l; }));
+
+function openExt(key, kind) {
+  const loc = window._extLocs[key]; if(!loc) return false;
+  if (IN_APP_WEBVIEW) {
+    window.location.href = kind==='dp' ? dpWebUrl(loc) : xhsWebUrl(loc);
+  } else {
+    window.location.href = kind==='dp' ? dpAppUrl(loc) : xhsAppUrl(loc);
+  }
+  return false;
+}
+function openXhs(key) { return openExt(key, 'xhs'); }
+function openDp(key)  { return openExt(key, 'dp'); }
+
+function locCard(loc, dayIdx) {
+  const dot = loc.type==='food'?'food':loc.type==='spot'?'spot':loc.type==='drink'?'drink':loc.type==='hotel'?'hotel':'transport';
+  const bdg = loc.type==='food'?'<span class="badge food">餐</span>':loc.type==='spot'?'<span class="badge spot">景</span>':loc.type==='drink'?'<span class="badge drink">饮</span>':'';
+  const uid = `d${dayIdx}-${loc.name.replace(/\W/g,'')}`;
+  const locKey = `${dayIdx}::${loc.name}`;
+  const gmapQ = loc.gmap||encodeURIComponent(loc.name);
+  let lnk = `<button class="btn nav" onclick="openAS('${loc.name.replace(/'/g,"\\'")}',${loc.lat},${loc.lng},'${gmapQ}')">📍 导航</button>`;
+  if(loc.xhs||loc.xhsKeyword) {
+    const xhsHref = IN_APP_WEBVIEW ? xhsWebUrl(loc) : xhsAppUrl(loc);
+    const xhsLabel = IN_APP_WEBVIEW ? '📕 小红书' : '📕 小红书 App';
+    lnk += `<a href="${xhsHref}" onclick="return openXhs('${locKey.replace(/'/g,"\\'")}')" class="btn xhs">${xhsLabel}</a>`;
+  }
+  const dpEnabled = loc.dianping !== false &&
+    (loc.dianping || loc.dianpingKeyword || loc.type==='food' || loc.type==='drink');
+  if(dpEnabled) {
+    const dpHref = IN_APP_WEBVIEW ? dpWebUrl(loc) : dpAppUrl(loc);
+    const dpLabel = IN_APP_WEBVIEW ? '🍜 大众点评' : '🍜 大众点评 App';
+    lnk += `<a href="${dpHref}" onclick="return openDp('${locKey.replace(/'/g,"\\'")}')" class="btn dp">${dpLabel}</a>`;
+  }
+  if(loc.reserve) lnk += `<a href="${loc.reserve}" target="_blank" class="btn rsv">📅 预约/官网</a>`;
+  lnk += `<button class="btn cut" onclick="cutLoc(${dayIdx},'${loc.name.replace(/'/g,"\\'")}')">✕ 删减</button>`;
+  return `<div class="tl-item"><div class="tl-dot ${dot}"></div><div class="card" onclick="if(!event.target.closest('.btn,.links'))toggle('${uid}')"><div class="time">${loc.time!=='—'?loc.time:'备选'}</div><div class="name">${bdg} ${loc.name}</div><div class="desc">${loc.desc}</div>${loc.budget?'<div class="budget">'+loc.budget+'</div>':''}${payChips(loc.pay)}<div class="links">${lnk}</div>${loc.detail?'<div class="details closed" id="'+uid+'">'+loc.detail.replace(/\n/g,'<br>')+'</div>':''}</div></div>`;
+}
+
+function renderDay(idx) {
+  const d = DAYS.find(x=>x.id===idx); if(!d) return '';
+  const visible = d.locations.filter(l=>!isCut(idx,l.name));
+  const main = visible.filter(l=>l.time!=='—');
+  const alt = visible.filter(l=>l.time==='—');
+  const cutN = d.locations.length - visible.length;
+  let h = `<div class="day-head"><h2>${d.title}</h2><p>${d.date}</p></div>`;
+  if(cutN) h += `<div class="cut-bar"><span>本日已删减 ${cutN} 项（仅本机生效）</span><button onclick="showCuts()">查看/恢复</button></div>`;
+  if(main.length>1) h += '<div class="route-info" id="route-info"><h4>🚶 步行路线</h4><span style="color:var(--text-tertiary)">计算中…（OSRM/OSM数据）</span></div>';
+  if(main.length) { h += '<div class="section-head">行程</div><div class="timeline">'; main.forEach(l => h += locCard(l, idx)); h += '</div>'; }
+  if(alt.length) { h += '<div class="section-head">备选（点卡片看详情）</div><div class="timeline">'; alt.forEach(l => h += locCard(l, idx)); h += '</div>'; }
+  if(!visible.length) h += '<div class="pay-summary">本日项目已全部删减，点上方「查看/恢复」找回。</div>';
+  return h;
+}
+
+let cur = 0;
+const tabsEl = document.getElementById('tabs');
+const contentEl = document.getElementById('content');
+
+DAYS.forEach(d => {
+  const btn = document.createElement('button');
+  btn.className = 'tab' + (d.id===0?' active':'');
+  btn.dataset.day = d.id;
+  btn.textContent = d.label;
+  tabsEl.appendChild(btn);
+});
+
+function go(idx) {
+  cur = idx;
+  tabsEl.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', String(t.dataset.day)===String(idx)));
+  contentEl.innerHTML = idx==='cuts' ? cutsContent() : idx===0 ? overviewContent() : renderDay(idx);
+  if(idx!=='cuts') showDay(idx);
+  window.scrollTo({top:0});
+  const tab = tabsEl.querySelector(`[data-day="${idx}"]`);
+  if(tab) tab.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+}
+
+function toggle(id) { const el=document.getElementById(id); if(el) el.classList.toggle('closed'); }
+
+const cutsTab = document.createElement('button');
+cutsTab.className = 'tab';
+cutsTab.dataset.day = 'cuts';
+cutsTab.id = 'cuts-tab';
+tabsEl.appendChild(cutsTab);
+function updateCutsTab() { cutsTab.textContent = cuts.size ? `已删减 ${cuts.size}` : '已删减'; }
+updateCutsTab();
+
+tabsEl.addEventListener('click', e => { const t=e.target.closest('.tab'); if(t) go(t.dataset.day==='cuts' ? 'cuts' : +t.dataset.day); });
+
+go(0);
+
+const asOverlay = document.createElement('div');
+asOverlay.className = 'as-overlay';
+asOverlay.innerHTML = `<div class="as-sheet">
+  <div class="as-group" id="as-opts"></div>
+  <div class="as-group"><button class="as-item as-cancel" onclick="closeAS()">取消</button></div>
+</div>`;
+document.body.appendChild(asOverlay);
+asOverlay.addEventListener('click', e => { if (e.target === asOverlay) closeAS(); });
+
+const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+function amapAppUrl(name, lat, lng) {
+  const scheme = IS_IOS ? 'iosamap' : 'androidamap';
+  return `${scheme}://viewMap?sourceApplication=trip&poiname=${encodeURIComponent(name)}&lat=${lat}&lon=${lng}&dev=0`;
+}
+function amapWebUrl(name, lat, lng) {
+  return `https://uri.amap.com/marker?position=${lng},${lat}&name=${encodeURIComponent(name)}&src=trip&coordinate=wgs84&callnative=1`;
+}
+function openAmap(name, lat, lng) {
+  if (IN_APP_WEBVIEW) { window.open(amapWebUrl(name, lat, lng)); return; }
+  window.location.href = amapAppUrl(name, lat, lng);
+}
+
+function openAS(name, lat, lng, gmap) {
+  const q = gmap || encodeURIComponent(name);
+  const encName = encodeURIComponent(name);
+  const safeName = name.replace(/'/g,"\\'");
+  const appleUrl = IN_APP_WEBVIEW
+    ? `https://maps.apple.com/?q=${lat},${lng}&ll=${lat},${lng}&name=${encName}`
+    : `maps://maps.apple.com/?q=${lat},${lng}&name=${encName}`;
+  const googleUrl = `https://www.google.com/maps/search/?api=1&query=${q}`;
+  document.getElementById('as-opts').innerHTML =
+    `<button class="as-item" onclick="window.open('${appleUrl}');closeAS()">🍎 Apple Maps</button>` +
+    `<button class="as-item" onclick="window.open('${googleUrl}');closeAS()">🗺️ Google Maps</button>` +
+    `<button class="as-item" onclick="openAmap('${safeName}',${lat},${lng});closeAS()">🧭 高德地图 App</button>`;
+  asOverlay.classList.add('show');
+}
+function closeAS() { asOverlay.classList.remove('show'); }
+</script>
+</body>
+</html>
