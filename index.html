@@ -194,6 +194,35 @@ a:hover { text-decoration: underline; }
 .leaflet-control-zoom a { width: 34px !important; height: 34px !important; line-height: 34px !important; font-size: 16px !important; border-radius: 10px !important; background: rgba(255,255,255,.85) !important; -webkit-backdrop-filter: blur(10px) !important; backdrop-filter: blur(10px) !important; border: .5px solid var(--separator) !important; color: var(--text-primary) !important; }
 .leaflet-control-zoom { border-radius: 12px !important; overflow: hidden; box-shadow: var(--shadow-md) !important; border: none !important; }
 .leaflet-control-attribution { font-size: 9px !important; opacity: .5; }
+
+/* ══════════ 桌面宽屏：左地图固定 + 右列表独立滚动 ══════════ */
+@media (min-width: 900px) {
+  body { overflow: hidden; }
+  #map {
+    position: fixed; left: 0; top: 0;
+    width: 52vw; height: 100vh; min-height: 0;
+  }
+  .tabs {
+    position: fixed; top: 0; left: 52vw; right: 0;
+    padding: 14px 20px; z-index: 200;
+    border-bottom: .5px solid var(--separator);
+    border-left: .5px solid var(--separator);
+  }
+  .content {
+    position: fixed; top: 58px; left: 52vw; right: 0; bottom: 0;
+    max-width: none; margin: 0;
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding: 8px 28px 40px;
+    border-left: .5px solid var(--separator);
+    background: var(--bg-secondary);
+  }
+  .content > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+  .hero h1 { font-size: 30px; }
+  .info-grid { grid-template-columns: 1fr 1fr; }
+  .card:hover { box-shadow: var(--shadow-md); }
+  .tab:hover { background: var(--separator); }
+  .tab.active:hover { background: var(--accent-hover); }
+}
 </style>
 </head>
 <body>
@@ -578,6 +607,7 @@ function renderDay(idx) {
 let cur = 0;
 const tabsEl = document.getElementById('tabs');
 const contentEl = document.getElementById('content');
+window.addEventListener('resize', () => map.invalidateSize());
 
 DAYS.forEach(d => {
   const btn = document.createElement('button');
@@ -593,6 +623,8 @@ function go(idx) {
   contentEl.innerHTML = idx==='cuts' ? cutsContent() : idx===0 ? overviewContent() : renderDay(idx);
   if(idx!=='cuts') showDay(idx);
   window.scrollTo({top:0});
+  contentEl.scrollTop = 0;
+  setTimeout(()=>map.invalidateSize(), 50);
   const tab = tabsEl.querySelector(`[data-day="${idx}"]`);
   if(tab) tab.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
 }
