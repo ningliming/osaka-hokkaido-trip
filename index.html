@@ -245,39 +245,39 @@ const DAYS = [
     { name: '金龙拉面', lat: 34.6689, lng: 135.5019, type: 'food', time: '—', desc: '备选宵夜：24小时，自助机点餐', pay: { cash: 1, card: 0 }, detail: '只收现金。辣韭菜自助随便加。', gmap: 'Kinryu+Ramen+Dotonbori' },
     { name: '唐吉诃德摩天轮', lat: 34.6693, lng: 135.5031, type: 'spot', time: '—', desc: '备选：道顿堀夜景，22:00前截止', budget: '600円', gmap: 'Don+Quijote+Dotonbori+Ferris+Wheel' }
   ]},
-  { id: 2, label: 'D2 大阪', date: '12/20 周日', title: '大阪城 · 中崎町 · 梅田夜景（放慢）', color: '#ff2d55', locations: [
-    { name: '大阪城天守阁', lat: 34.6873, lng: 135.5262, type: 'spot', time: '10:00', desc: '睡到自然醒再去，只逛公园不进天守阁也行', budget: '天守阁 600円', detail: '悠闲口径：10点前后到即可。雨雪天可改博物馆或商场。⚠️明天USJ要早起，今晚梅田吃完饭就回，不排宵夜场。', gmap: 'Osaka+Castle' },
+  { id: 2, label: 'D2 大阪', date: '12/20 周日', title: '大阪城 · 中崎町 · 梅田夜景', color: '#ff2d55', locations: [
+    { name: '大阪城天守阁', lat: 34.6873, lng: 135.5262, type: 'spot', time: '09:00', desc: '开门就进人最少，公园+天守阁约2小时', budget: '天守阁 600円', detail: '9:00开门。雨雪天可改博物馆或商场。', gmap: 'Osaka+Castle' },
     { name: '黑门市场', lat: 34.6653, lng: 135.5064, type: 'food', time: '12:00', desc: '午餐逛吃：小吃摊为主', detail: '避雷：高价海鲜丼刺客多，本地人更推荐木津市场。逛吃小吃即可，别在市场吃正餐大丼。', pay: { cash: 1, card: 0.5 }, gmap: 'Kuromon+Ichiba+Market', xhsKeyword: '黑门市场 避雷' },
-    { name: '中崎町昭和老街', lat: 34.7075, lng: 135.5052, type: 'spot', time: '14:30', desc: '百年老宅咖啡巡礼：OSA COFFEE、Salon de AManTo', detail: '梅田站步行10分钟。文艺小店+古着+咖啡，慢逛2小时。逛累就跳过，直接梅田商场歇脚。', gmap: 'Nakazakicho+Osaka', xhsKeyword: '中崎町 咖啡' },
+    { name: '中崎町昭和老街', lat: 34.7075, lng: 135.5052, type: 'spot', time: '14:30', desc: '百年老宅咖啡巡礼：OSA COFFEE、Salon de AManTo', detail: '梅田站步行10分钟。文艺小店+古着+咖啡，慢逛2小时。', gmap: 'Nakazakicho+Osaka', xhsKeyword: '中崎町 咖啡' },
     { name: '堀江橘子街→美国村', lat: 34.6717, lng: 135.4946, type: 'spot', time: '—', desc: '备选：替换中崎町的潮流小店线，一路走到心斋桥道顿堀', detail: 'YOLABO大阪Citywalk地图路线④：堀江橘子街→美国村→心斋桥→道顿堀。购物时间留宽。', gmap: 'Orange+Street+Horie+Osaka', xhs: 'https://www.xiaohongshu.com/explore/6ad97caf00000000310355fa' },
     { name: '中之岛美术馆+北滨咖啡', lat: 34.6919, lng: 135.5023, type: 'spot', time: '—', desc: '备选：美术馆+老建筑+河岸线，下午更松', detail: 'YOLABO路线②：中之岛美术馆→中央公会堂→中之岛公园→北滨。挑一处看展或北滨喝咖啡。', gmap: 'Nakanoshima+Museum+of+Art+Osaka' },
     { name: '梅田蓝天大厦 空中庭园', lat: 34.7053, lng: 135.4900, type: 'spot', time: '16:15', desc: '锚点：日落约16:50，提前买票预约日落时段', budget: '约 2,000円', detail: '天气差备选：阿倍野Harukas（日本第一高楼）或梅田商场。', gmap: 'Umeda+Sky+Building', xhsKeyword: '梅田蓝天大厦 日落' },
     { name: '阪神百货B1美食街', lat: 34.7013, lng: 135.4980, type: 'food', time: '18:30', desc: '晚餐主推：平价海鲜丼，几十块人民币吃饱', budget: '人均 1,000–2,000円', gmap: 'Hanshin+Department+Store+Umeda', xhsKeyword: '阪神百货 海鲜丼' },
     { name: '银座篝 LUCUA梅田', lat: 34.7025, lng: 135.4959, type: 'food', time: '—', desc: '备选：米其林鸡白汤拉面，会排队', budget: '人均 1,500–2,500円', gmap: 'Ginza+Kagari+Lucua+Osaka' }
   ]},
-  { id: 3, label: 'D3 USJ', date: '12/21 周一', title: 'USJ 一日（已锁定）', color: '#af52de', locations: [
-    { name: '日本环球影城 USJ', lat: 34.6654, lng: 135.4323, type: 'spot', time: '08:30', desc: '已锁定必去：周一人少于周末，全天唯一锚点', budget: '门票约 8,600円起 + 快速券', detail: '门票+快速通行券现在就买（圣诞周快速券会售罄，预订清单第一优先）。任天堂园区需整理券（App抽）。开园前到；快速券项目按预约时段走，其余随缘，下午累了看游行/室内秀歇脚，不追求刷全。今天不排其他景点。', reserve: 'https://www.usj.co.jp/ticket/', gmap: 'Universal+Studios+Japan', xhsKeyword: 'USJ 12月 攻略' },
-    { name: '新世界 · 通天阁', lat: 34.6522, lng: 135.5063, type: 'spot', time: '—', desc: '备选：难波南侧步行可达，D1/D2路过才去', budget: '通天阁约 1,200円', gmap: 'Tsutenkaku+Shinsekai' },
-    { name: '元祖串炸だるま 新世界', lat: 34.6524, lng: 135.5060, type: 'food', time: '—', desc: '备选：路过新世界才吃，串炸蘸酱只能蘸一次', budget: '人均 1,500–2,000円', gmap: 'Kushikatsu+Daruma+Shinsekai', xhsKeyword: '元祖串炸 达摩' },
-    { name: '蟹道乐 道顿堀本店', lat: 34.6688, lng: 135.5013, type: 'food', time: '19:30', desc: '晚餐：全蟹宴，订19:30后场次给USJ留余量', budget: '晚市人均 8,000–12,000円；午市便宜约30%', pay: { cash: 1, card: 1 }, detail: '现场排队2小时起，务必订位（19:30后场次，USJ玩到闭园也不慌）。订不到→松阪牛烧肉M法善寺横丁店。', gmap: 'Kani+Doraku+Dotonbori', xhsKeyword: '蟹道乐 本店 预约' },
+  { id: 3, label: 'D3 大阪', date: '12/21 周一', title: '弹性日 · USJ 或 新世界', color: '#af52de', locations: [
+    { name: '日本环球影城 USJ', lat: 34.6654, lng: 135.4323, type: 'spot', time: '08:30', desc: '方案A（推荐）：周一人少于周末，全天锚点', budget: '门票约 8,600円起 + 快速券', detail: '必须提前买门票+快速通行券；任天堂园区需整理券（App抽）。圣诞周仍是旺季，开园前到。', reserve: 'https://www.usj.co.jp/ticket/', gmap: 'Universal+Studios+Japan', xhsKeyword: 'USJ 12月 攻略' },
+    { name: '新世界 · 通天阁', lat: 34.6522, lng: 135.5063, type: 'spot', time: '—', desc: '方案B：不去USJ的轻松版，上午来', budget: '通天阁约 1,200円', gmap: 'Tsutenkaku+Shinsekai' },
+    { name: '元祖串炸だるま 新世界', lat: 34.6524, lng: 135.5060, type: 'food', time: '—', desc: '方案B午餐：串炸蘸酱只能蘸一次', budget: '人均 1,500–2,000円', gmap: 'Kushikatsu+Daruma+Shinsekai', xhsKeyword: '元祖串炸 达摩' },
+    { name: '蟹道乐 道顿堀本店', lat: 34.6688, lng: 135.5013, type: 'food', time: '18:30', desc: '晚餐：全蟹宴，提前官网/平台订位', budget: '晚市人均 8,000–12,000円；午市便宜约30%', pay: { cash: 1, card: 1 }, detail: '现场排队2小时起，务必订位。订不到→松阪牛烧肉M法善寺横丁店。', gmap: 'Kani+Doraku+Dotonbori', xhsKeyword: '蟹道乐 本店 预约' },
     { name: '松阪牛烧肉M 法善寺店', lat: 34.6680, lng: 135.5020, type: 'food', time: '—', desc: '备选晚餐：三大和牛烧肉', budget: '人均 6,000–10,000円', gmap: 'Matsusakagyu+Yakiniku+M+Hozenji' }
   ]},
-  { id: 4, label: 'D4 移动', date: '12/22 周二', title: '飞新千岁 → 函馆（纯移动日）', color: '#007aff', locations: [
-    { name: '关西机场 → 新千岁（航班）', lat: 34.4320, lng: 135.2304, type: 'transport', time: '10:30', desc: '悠闲口径：9:00–11:30起飞均可，不必抢最早班', detail: 'USJ翌日睡饱再走。乐桃/捷星从KIX；JAL/ANA多从伊丹ITM出发，别订错机场。中段机票现在就订。函馆去留（方案A/B）不影响此段。', gmap: 'Kansai+International+Airport' },
-    { name: '新千岁机场午餐', lat: 42.7752, lng: 141.6925, type: 'food', time: '12:30', desc: 'GARAKU机场分店汤咖喱 / えびそば一幻虾拉面', budget: '人均 1,200–1,800円', gmap: 'New+Chitose+Airport', xhsKeyword: '新千岁机场 美食' },
-    { name: 'JR特急北斗 → 函馆', lat: 42.7752, lng: 141.6925, type: 'transport', time: '13:30', desc: '约3.5小时，指定席提前订，18:00前后到函馆', detail: '冬季可能延误，今天就是移动+吃饭睡觉，函馆景点全在明天，到多晚都不损失。⚠️函馆段本身待确认（方案A保函馆 vs 方案B砍函馆札幌基地，见总览决策块）。', gmap: 'Hakodate+Station' },
-    { name: '函馆站前酒店（待订·方案A才订）', lat: 41.7736, lng: 140.7264, type: 'hotel', time: '18:00', desc: '住函馆站前，2晚（22–23日），朝市横丁都在步行圈', detail: '待你确认方案A后再订。若选方案B（砍函馆），此段改为新千岁→札幌37分钟直达，札幌基地3晚。', gmap: 'Hakodate+Station' },
+  { id: 4, label: 'D4 移动', date: '12/22 周二', title: '飞新千岁 → 特急直奔函馆', color: '#007aff', locations: [
+    { name: '关西机场 → 新千岁（航班）', lat: 34.4320, lng: 135.2304, type: 'transport', time: '09:30', desc: '订9:00–10:30起飞班次，约2小时', detail: '乐桃/捷星从KIX；JAL/ANA多从伊丹ITM出发，别订错机场。中段机票现在就订。', gmap: 'Kansai+International+Airport' },
+    { name: '新千岁机场午餐', lat: 42.7752, lng: 141.6925, type: 'food', time: '12:00', desc: 'GARAKU机场分店汤咖喱 / えびそば一幻虾拉面', budget: '人均 1,200–1,800円', gmap: 'New+Chitose+Airport', xhsKeyword: '新千岁机场 美食' },
+    { name: 'JR特急北斗 → 函馆', lat: 42.7752, lng: 141.6925, type: 'transport', time: '13:00', desc: '约3.5小时，指定席提前订，17:00前到函馆', detail: '冬季可能延误，今天不排锚点。到得晚就只吃饭睡觉。', gmap: 'Hakodate+Station' },
+    { name: '函馆站前酒店（待订）', lat: 41.7736, lng: 140.7264, type: 'hotel', time: '17:00', desc: '住函馆站前，2晚（22–23日），朝市横丁都在步行圈', gmap: 'Hakodate+Station' },
     { name: '大门横丁', lat: 41.7723, lng: 140.7286, type: 'food', time: '18:30', desc: '晚餐：20多家居酒屋小摊，深夜食堂氛围', budget: '人均 2,000–3,500円', pay: { cash: 1, card: 0.5 }, detail: '函馆站步行5分钟。店小店多，到得晚也不愁吃。', gmap: 'Daimon+Yokocho+Hakodate', xhsKeyword: '函馆 大门横丁' }
   ]},
   { id: 5, label: 'D5 函馆', date: '12/23 周三', title: '朝市 · 元町 · 函馆山夜景', color: '#5856d6', locations: [
-    { name: '函馆朝市', lat: 41.7730, lng: 140.7250, type: 'food', time: '08:30', desc: '早午餐海鲜丼，8:00–9:30去即可不必赶开市；先问价再下单', budget: '海鲜丼 2,000–4,000円', pay: { cash: 1, card: 0.5 }, detail: '6:00开市，多数店中午打烊。部分摊位喊价制，跟着排队人多的摊位走。今天一条直线：朝市→元町→湾区→函馆山→湾区点灯，无回头路。', gmap: 'Hakodate+Morning+Market', xhsKeyword: '函馆朝市 推荐' },
+    { name: '函馆朝市', lat: 41.7730, lng: 140.7250, type: 'food', time: '08:00', desc: '早餐海鲜丼，9点前人少；先问价再下单', budget: '海鲜丼 2,000–4,000円', pay: { cash: 1, card: 0.5 }, detail: '6:00开市，多数店中午打烊。部分摊位喊价制，跟着排队人多的摊位走。', gmap: 'Hakodate+Morning+Market', xhsKeyword: '函馆朝市 推荐' },
     { name: '八幡坂 · 元町教会群', lat: 41.7658, lng: 140.7137, type: 'spot', time: '10:00', desc: '坡道尽头是海，函馆最出片机位', detail: '市电到十字街/末广町。东正教堂冬季圣堂不开放，看外观。坡道结冰慢走。', gmap: 'Hachiman+zaka+Hakodate', xhsKeyword: '八幡坂 拍照' },
     { name: '金森红砖仓库', lat: 41.7668, lng: 140.7175, type: 'spot', time: '12:00', desc: '午餐+逛仓库群（9:30–19:00），顺路幸运小丑汉堡', detail: '今晚回来看点灯：圣诞梦幻节海上圣诞树，往年18:00点灯+烟花，到12/25。午餐也可选仓库旁 California Baby（你收藏的YOLABO函馆地图推荐）。', gmap: 'Kanemori+Red+Brick+Warehouse', xhsKeyword: '金森红砖仓库 圣诞', xhs: 'https://www.xiaohongshu.com/explore/6ae7252c000000000e02e009' },
     { name: '摩周丸 旧联络船', lat: 41.7749, lng: 140.7238, type: 'spot', time: '—', desc: '备选：朝市后顺路，站西侧港边步行几分钟', gmap: 'Mashu+Maru+Hakodate' },
     { name: '函馆山缆车 · 百万夜景', lat: 41.7593, lng: 140.7139, type: 'spot', time: '15:30', desc: '锚点：16:00天黑即夜景，17:30前下山', budget: '缆车往返 1,800円', detail: '冬季营业10:00–21:00，上山末班20:30。山顶极冷风大，全套保暖。大风会停运——当天16:00前查官网 334.co.jp 运行状况；停运则改八幡坂+仓库点灯。', reserve: 'https://334.co.jp/chs/', gmap: 'Mt+Hakodate+Ropeway', xhsKeyword: '函馆山夜景 冬季' },
-    { name: 'あじさい 十字街店 盐味拉面', lat: 41.7639, lng: 140.7157, type: 'food', time: '18:30', desc: '晚餐主推：函馆盐味拉面，元町/湾区顺路', budget: '人均 1,000–1,500円', detail: '悠闲化改动：不去五稜郭方向的味彩，改十字街顺路的あじさい，看完点灯走几步就到。', gmap: 'Ajisai+Ramen+Jujigai+Hakodate', xhsKeyword: '函馆 盐味拉面 あじさい' },
-    { name: '五稜郭塔 · 五棱星之梦', lat: 41.7968, lng: 140.7541, type: 'spot', time: '—', desc: '已正式砍（11/24悠闲化决策）：不同方向来回耗半天', budget: '塔约 1,000円', detail: '留作下次道南专线素材。', gmap: 'Goryokaku+Tower' },
-    { name: '热带植物园 猴子泡汤', lat: 41.7823, lng: 140.7864, type: 'spot', time: '—', desc: '已正式砍（同上）：汤之川方向不顺路', budget: '300円', detail: '留作下次道南专线素材。', gmap: 'Hakodate+Tropical+Botanical+Garden' }
+    { name: '味彩盐味拉面（五稜郭）', lat: 41.7955, lng: 140.7539, type: 'food', time: '18:30', desc: '晚餐主推：函馆盐味拉面代表', budget: '人均 1,000–1,500円', gmap: 'Ajisai+Ramen+Goryokaku', xhsKeyword: '函馆 盐味拉面 味彩' },
+    { name: '五稜郭塔 · 五棱星之梦', lat: 41.7968, lng: 140.7541, type: 'spot', time: '—', desc: '备选：体力好才加，星形城郭冬季点灯到19:00', budget: '塔约 1,000円', detail: '与主线不同方向，默认砍。要去就压缩元町时间。', gmap: 'Goryokaku+Tower' },
+    { name: '热带植物园 猴子泡汤', lat: 41.7823, lng: 140.7864, type: 'spot', time: '—', desc: '备选：冬季限定猴子温泉（12月起）', budget: '300円', detail: '汤之川方向，9:30–16:30。天冷才放猴子泡汤，去前查园方公告。', gmap: 'Hakodate+Tropical+Botanical+Garden' }
   ]},
   { id: 6, label: 'D6 登别', date: '12/24 周四', title: '平安夜 · 地狱谷 · 温泉旅馆', color: '#34c759', locations: [
     { name: 'JR特急北斗 函馆→登别', lat: 41.7736, lng: 140.7264, type: 'transport', time: '10:30', desc: '约2.5小时，13:30前后到登别站', gmap: 'Noboribetsu+Station' },
@@ -305,10 +305,10 @@ const DAYS = [
     { name: 'ESPRESSO D WORKS / DRA7', lat: 43.0590, lng: 141.3530, type: 'food', time: '—', desc: '备选下午茶：松饼出名，大通附近歇脚', detail: '来自你收藏的札幌美食清单。宫越屋咖啡也是清单里的歇脚备选。', gmap: 'Espresso+D+Works+Sapporo', xhs: 'https://www.xiaohongshu.com/explore/6afc3e2c000000001803b18e' },
     { name: 'AOAO Sapporo 夜间水族馆', lat: 43.0576, lng: 141.3548, type: 'spot', time: '—', desc: '备选：商场内夜间水族馆，语雀同事推荐', detail: 'moyuk SAPPORO内，营业到晚上，雪夜室内好去处；萌物周边好买（购物笔记也点名）。与圣诞市集二选一或饭前顺路。', gmap: 'AOAO+Sapporo+Aquarium' }
   ]},
-  { id: 8, label: 'D8 小樽', date: '12/26 周六', title: '小樽慢日 · 青之点灯', color: '#00c7be', locations: [
-    { name: 'JR快速 札幌→小樽', lat: 43.0686, lng: 141.3508, type: 'transport', time: '09:45', desc: '不用赶早，9:30–10:00出发。约35分钟，暴雪出门查运行情报', gmap: 'Otaru+Station' },
+  { id: 8, label: 'D8 小樽', date: '12/26 周六', title: '小樽运河 · 青之点灯', color: '#00c7be', locations: [
+    { name: 'JR快速 札幌→小樽', lat: 43.0686, lng: 141.3508, type: 'transport', time: '09:00', desc: '约35分钟。暴雪可能停运/延误，出门查运行情报', gmap: 'Otaru+Station' },
     { name: '钱函站海边（中途下车）', lat: 43.1445, lng: 141.1104, type: 'spot', time: '—', desc: '备选：札幌→小樽途中，晴天可下车拍海再上下一班', detail: '车次多不用急。阴天/雪天直接跳过（你收藏的情侣攻略推荐，仅晴天值得）。走法（收藏行程图实测）：出站右转沿海岸线走一段即达《First Love》同款雪+海机位，停留45分钟够；海风刺骨，防滑鞋+全套保暖。', gmap: 'Zenibako+Station', xhs: 'https://www.xiaohongshu.com/explore/6a9a4927000000000d02579d' },
-    { name: '船见坂', lat: 43.1953, lng: 140.9973, type: 'spot', time: '10:30', desc: '《情书》同款坡道，坡顶望海。晴天去才出片，阴天普通', detail: '雪后路面滑，靠边走，别站车道中间拍照。', gmap: 'Funamizaka+Otaru', xhsKeyword: '小樽 船见坂', xhs: 'https://www.xiaohongshu.com/explore/6ad9f946000000002c0271dd' },
+    { name: '船见坂', lat: 43.1953, lng: 140.9973, type: 'spot', time: '09:45', desc: '《情书》同款坡道，坡顶望海。晴天去才出片，阴天普通', detail: '雪后路面滑，靠边走，别站车道中间拍照。', gmap: 'Funamizaka+Otaru', xhsKeyword: '小樽 船见坂', xhs: 'https://www.xiaohongshu.com/explore/6ad9f946000000002c0271dd' },
     { name: '堺町通 · LeTAO本店', lat: 43.1908, lng: 141.0078, type: 'spot', time: '11:00', desc: '甜点老街：LeTAO双层芝士蛋糕、北菓楼泡芙、六花亭、音乐盒堂', budget: '下午茶人均 1,000–1,500円', gmap: 'LeTAO+Main+Store+Otaru', xhsKeyword: '小樽 堺町通 LeTAO' },
     { name: '政寿司 本店', lat: 43.1932, lng: 141.0056, type: 'food', time: '12:30', desc: '午餐主推：小樽寿司名店，人多改运河边海鲜丼', budget: '人均 3,000–6,000円', gmap: 'Masazushi+Otaru', xhsKeyword: '小樽 政寿司' },
     { name: '商业街印度咖喱小店', lat: 43.1920, lng: 141.0060, type: 'food', time: '—', desc: '备选：walk in便宜好吃，吃腻清淡日料时的暖身救赎', detail: '你收藏的笔记作者两次去吃（咖喱汤+印度菜都好评）。冰天雪地来碗浓郁咖喱汤。具体店名笔记未写，商业街现场随缘。', gmap: 'Otaru+Sakaimachi+curry', xhs: 'https://www.xiaohongshu.com/explore/6aeb065500000000070033be' },
@@ -316,7 +316,7 @@ const DAYS = [
     { name: '运河硝子馆 玻璃饰品', lat: 43.1975, lng: 141.0035, type: 'spot', time: '—', desc: '备选：玻璃项链伴手礼，笔记作者果断带走款', gmap: 'Otaru+Glass+Shop+Canal', xhs: 'https://www.xiaohongshu.com/explore/6aeb065500000000070033be' },
     { name: '小樽运河 · 青之运河点灯', lat: 43.1988, lng: 141.0025, type: 'spot', time: '15:30', desc: '锚点：日落约16:00点灯，浅草桥机位，16:30–17:00回程', detail: '点灯日落后–22:30。蓝色LED+煤气灯+雪，天黑前到占机位。可选夜间运河游船（需预约）。', gmap: 'Otaru+Canal', xhsKeyword: '小樽 青之运河 点灯' },
     { name: '天狗山缆车（《初恋》取景）', lat: 43.1667, lng: 140.9744, type: 'spot', time: '—', desc: '备选：与运河点灯二选一，要去就15:00前上山', detail: '2026年11/4–27检修停运，12月应已恢复——出发前查官网。傍晚下山缆车排队可达1小时且室外极冷；蓝调看完立刻排队。默认仍推运河点灯（免排队）。小樽站前4号站台乘9路巴士到山麓。JR小樽站有缆车+市内交通套票：停运可退款但窗口关门就退不了，发现停运尽早退。', gmap: 'Tenguyama+Ropeway+Otaru', xhs: 'https://www.xiaohongshu.com/explore/6ad9f946000000002c0271dd' },
-    { name: '白色恋人公园 点灯', lat: 43.0813, lng: 141.2717, type: 'spot', time: '—', desc: 'D8晚默认砍（连续两个户外夜景太赶）；想去改D7下午专程', detail: '11/24悠闲化决策：小樽看完点灯再绕宫之泽=冬夜连赶两场，默认不去。真想去：D7下午入住后地铁专程一趟（16:00–19:00免费庭院点灯，2026年50周年主题，收费区票亭16:30截止），或D9上午平替神宫。', gmap: 'Shiroi+Koibito+Park', xhsKeyword: '白色恋人公园 点灯' },
+    { name: '白色恋人公园 点灯', lat: 43.0813, lng: 141.2717, type: 'spot', time: '—', desc: '备选：回程宫之泽下车，16:00–19:00免费庭院点灯', detail: '2026年50周年主题。收费区票亭16:30截止。周六人多，累就弃，直接回薄野吃饭。', gmap: 'Shiroi+Koibito+Park', xhsKeyword: '白色恋人公园 点灯' },
     { name: 'HARD OFF / BOOK OFF 中古店', lat: 43.0790, lng: 141.2600, type: 'spot', time: '—', desc: '备选：白色恋人旁1–1.5km，逛中古随缘不专程', detail: '你收藏的中古店笔记：HARD OFF包鞋少而精（作者Burberry+Prada两双不到300RMB）；BOOK OFF更大、奢牌专区可试、有二手游戏机。期待放低，顺路才去。', gmap: 'Hard+Off+Sapporo+Miyanosawa', xhs: 'https://www.xiaohongshu.com/explore/6afc9959000000002b03d82f' },
     { name: '小樽夜间运河游船', lat: 43.1985, lng: 141.0030, type: 'spot', time: '—', desc: '备选：点灯时段乘船看运河，需预约', gmap: 'Otaru+Canal+Cruise' },
     { name: '北一硝子三号馆 · 音乐盒堂', lat: 43.1902, lng: 141.0083, type: 'spot', time: '—', desc: '备选：堺町通顺路，硝子馆煤油灯咖啡厅+音乐盒堂本馆', detail: '你收藏的行程图里各留40–50分钟。与LeTAO/六花亭同一条街，顺路挑着进即可。', gmap: 'Kitaichi+Glass+Otaru' },
@@ -324,8 +324,8 @@ const DAYS = [
     { name: '薄野晚餐（だるま/Suage+/拉面横丁）', lat: 43.0547, lng: 141.3532, type: 'food', time: '19:00', desc: '回札幌吃：昨天没吃到的那家今晚补', gmap: 'Susukino+Sapporo' }
   ]},
   { id: 9, label: 'D9 回程', date: '12/27 周日', title: '二条市场 · 新千岁回国', color: '#8e8e93', locations: [
-    { name: '二条市场 大磯', lat: 43.0596, lng: 141.3593, type: 'food', time: '09:00', desc: '睡饱再去的早午餐海鲜丼：大磯丼2,500円、海胆丼4,260円起', pay: { cash: 1, card: 0.5 }, detail: '7:30开门不必赶早，周三休、周日营业。30种以上丼饭可选。', gmap: 'Ohiso+Nijo+Market', xhsKeyword: '二条市场 大矶' },
-    { name: '北海道神宫', lat: 43.0541, lng: 141.3079, type: 'spot', time: '—', desc: '备选：有精神才加（与中岛公园二选一），雪大直接弃', detail: '悠闲口径：今天默认狸小路补货+收拾退房。雪中参拜+圆山公园属加项。', gmap: 'Hokkaido+Jingu', xhsKeyword: '北海道神宫 雪' },
+    { name: '二条市场 大磯', lat: 43.0596, lng: 141.3593, type: 'food', time: '08:00', desc: '早餐海鲜丼：大磯丼2,500円、海胆丼4,260円起', pay: { cash: 1, card: 0.5 }, detail: '7:30开门，周三休、周日营业。30种以上丼饭可选。', gmap: 'Ohiso+Nijo+Market', xhsKeyword: '二条市场 大矶' },
+    { name: '北海道神宫', lat: 43.0541, lng: 141.3079, type: 'spot', time: '09:30', desc: '可选：雪中参拜+圆山公园，雪大改狸小路补货', gmap: 'Hokkaido+Jingu', xhsKeyword: '北海道神宫 雪' },
     { name: '中岛公园 玩雪', lat: 43.0442, lng: 141.3540, type: 'spot', time: '—', desc: '备选：离薄野更近的玩雪轻活动，可平替神宫', detail: '你收藏的情侣攻略高评价项。地铁南北线中岛公园站即达，顺路不绕。', gmap: 'Nakajima+Park+Sapporo', xhs: 'https://www.xiaohongshu.com/explore/6a9a4927000000000d02579d' },
     { name: '北大校园+银杏林道', lat: 43.0770, lng: 141.3430, type: 'spot', time: '—', desc: '备选：雪景校园，札幌站步行可达', detail: 'YOLABO札幌地图路线①：北大正门→克拉克胸像→综合博物馆→银杏林道。只走开放区域。', gmap: 'Hokkaido+University', xhs: 'https://www.xiaohongshu.com/explore/6add79bf0000000031038f04' },
     { name: '机场伴手礼+退税', lat: 42.7880, lng: 141.6810, type: 'spot', time: '—', desc: '札幌农学院、GARAKU料理包；离境退税：护照机器刷一下', detail: '伴手礼不用市区背，机场应有尽有。⚠️退税新规：店内已登记的含税购物，离境时在新千岁退税机器刷护照（绿灯即完成），推荐选支付宝退税（博主实测回国1天内到账）。前提：每笔当晚已扫码登记，没登记=退不了。', gmap: 'New+Chitose+Airport+Shopping' },
@@ -372,13 +372,10 @@ function cutsContent() {
 
 function overviewContent() {
   return `
-<div class="hero"><h1>大阪 · 北海道 9日</h1><p class="subtitle">2026/12/19 – 12/27 · 两人 · 雪季圣诞线 · 悠闲基调</p></div>
-<div class="section-head">骨架已定（11/24）· 唯一待定：函馆去留</div>
-<div class="pay-summary"><h4>✅ 已锁定</h4>· <b>USJ 必去</b>（12/21全天，门票+快速券第一优先买）<br>· 机票三段口径不变：19日午到KIX / 22日9:00–11:30飞CTS（不必抢最早班）/ 27日午后回<br>· 悠闲原则：<b>每天最多1个锚点</b>，上午10点前不排硬任务（USJ/航班日除外）；五稜郭+猴子泡汤已砍、D8白色恋人点灯默认砍<br>· 酒店位置口径：难波/心斋桥站步行8min · 登别温泉旅馆一泊二食 · 札幌站—大通之间</div>
-<div class="pay-summary"><h4>⚖️ 函馆二选一（决定后再订函馆酒店和JR Pass）</h4><b>方案A 保函馆（当前页面骨架）</b>：函馆山夜景+朝市+八幡坂都要，代价是D4落地拉3.5h JR、5家酒店、买Pass约21,000円/人。<br><b>方案B 砍函馆·札幌基地（更悠闲）</b>：新千岁→札幌3晚→登别1晚（12/25圣诞夜）→札幌1晚，4家酒店零拉车日，不买Pass省约1万円/人；<span class="warn">代价：错过12/25圣诞市集最后一天+函馆夜景</span>，白色灯树节12/26仍可看。登别改圣诞夜入住更紧俏，选B要更快订旅馆。<br>关键取舍一句话：<b>函馆山夜景 vs 圣诞市集+零拉车</b>。告诉助手选A或B，页面按选择重排。</div>
+<div class="hero"><h1>大阪 · 北海道 9日</h1><p class="subtitle">2026/12/19 – 12/27 · 两人 · 雪季圣诞线</p></div>
 <div class="info-grid">
   <div class="info-card"><div class="label">住宿</div><div class="value">难波3晚 → 函馆2晚 → 登别1晚 → 札幌2晚</div></div>
-  <div class="info-card"><div class="label">机票（待订）</div><div class="value">19日午到KIX · 22日9–11:30飞CTS · 27日午后CTS回</div></div>
+  <div class="info-card"><div class="label">机票（待订）</div><div class="value">19日午到KIX · 22日早飞CTS · 27日午后CTS回</div></div>
   <div class="info-card"><div class="label">北海道动线</div><div class="value">新千岁→函馆→登别→札幌 单向不回头</div></div>
   <div class="info-card"><div class="label">天黑时间</div><div class="value">北海道16:00 · 大阪16:50<br>户外排15:30前</div></div>
 </div>
@@ -394,7 +391,7 @@ function overviewContent() {
 <div class="pay-summary"><h4>⚠️ 退税新规（11月起，收藏笔记博主实测）</h4><span class="warn">不再店内直接免税</span>：先付含税全款，离境后退税。结账没要护照→立刻问「免税登记在哪里办」（mont-bell一楼结账二楼登记，漏登退不了）。每晚扫小票二维码登记+专袋保管小票；新千岁机器刷护照，选支付宝退税回国1天内到账。购物预算按含税垫付多备约10%。<br>🚄 北海道JR班次极稀疏，错过等1–2小时：每天出门前截图当日班次表，D4/D6移动日卡准。</div>
 <div class="pay-summary"><h4>📗 语雀同事行程实测要点（东京+道南春节线）</h4>· <span class="ok-text">mahoroba满意+免费札幌巴士</span>：D7交通可省约4,500円/人，但巴士须官网提前订座<br>· 道南巴士机场→登别冬季现场买不到（willer-travel.com提前网购）——我们直达函馆不坐，记为动线备份<br>· 札幌站寄存柜大多满→直接去人工寄存点<br>· 全蟹宴两人约2,000元「值了」；北海道神宫、AOAO水族馆获推荐；Tiger Curry像商场便餐不必专程<br>· 零钱袋必带（硬币极多）；防滑靴最重要；美瑛一日团实操（约400元/人、6人成团需预约）记入下次素材</div>
 <div class="section-head">现在就要订</div>
-<div class="pay-summary"><h4>📅 预订清单（按紧急度，11/24更新）</h4>1. <span class="warn">USJ 12/21门票+快速通行券（已锁定必去，圣诞周快速券会售罄）</span><br>2. 机票三段：12/19到KIX、12/22 KIX→CTS（9:00–11:30起飞均可）、12/27 CTS→国内午后班——函馆去留不影响，可先订<br>3. <span class="warn">登别温泉旅馆12/24平安夜一泊二食（最紧俏；若选方案B变12/25圣诞夜，更紧俏）</span><br>4. 酒店：难波3晚、札幌站—大通2晚；<b>函馆站前2晚待确认方案A后再订</b><br>5. 蟹道乐12/21晚订位（19:30后场次）· 梅田空中庭园12/20日落票<br>6. <span class="ok-text">北海道铁路周游券5日券</span>约21,000円/人——<b>方案A才买</b>；方案B不买Pass，单买约11,000円/人<br>7. <span class="warn">若订到mahoroba：h-mahoroba.jp 预订次日免费札幌巴士</span>（冬季现场没座，同事实测）<br>8. 行前自办：VJW入境二维码填好截图（vjw.digital.go.jp）· <span class="warn">手机Suica现在就试加钱包</span>（可能失败，失败落地便利店买实体卡500円押金）· 换现金两人共8–10万円+零钱袋</div>
+<div class="pay-summary"><h4>📅 预订清单（按紧急度）</h4>1. 机票三段：12/19到KIX、12/22 KIX→CTS早班、12/27 CTS→国内午后班<br>2. <span class="warn">登别温泉旅馆12/24平安夜一泊二食（最紧俏）</span><br>3. 酒店：难波3晚、函馆站前2晚、札幌站—大通2晚<br>4. USJ 12/21门票+快速券（去USJ才买）<br>5. 蟹道乐12/21晚订位 · 梅田空中庭园12/20日落票<br>6. <span class="ok-text">北海道铁路周游券5日券</span>约21,000円/人（12/22–26，含函馆段必回本；单买三段指定席约20,500円还不含小樽）；圣诞周提前官网划指定席<br>7. <span class="warn">若订到mahoroba：h-mahoroba.jp 预订12/25免费札幌巴士</span>（冬季现场没座，同事实测）<br>8. 行前自办：VJW入境二维码填好截图（vjw.digital.go.jp）· <span class="warn">手机Suica现在就试加钱包</span>（可能失败，失败落地便利店买实体卡500円押金）· 换现金两人共8–10万円+零钱袋</div>
 <div class="section-head">支付与现金提醒</div>
 <div class="pay-summary"><h4>💴 每天带1–2万円现金</h4><span class="warn">只收现金/PayPay：</span>Suage+、金龙拉面、麺屋すみれ、朝市多数摊位<br><span class="ok-text">可刷卡：</span>大商场、便利店、蟹道乐、连锁餐厅<br>支付宝/微信覆盖不稳定，别依赖。交通用Suica/ICOCA（手机可开）。</div>
 <div class="pay-summary"><h4>❄️ 雪季提醒</h4>防滑防水靴刚需 · 帽手套围巾焊身上 · 手机贴暖宝宝<br><span class="warn">函馆山缆车大风停运</span>：当天16:00前查 334.co.jp<br>暴雪JR小樽线可能延误：D8出门查运行情报，备选札幌市内</div>
