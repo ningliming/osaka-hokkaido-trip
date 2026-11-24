@@ -281,12 +281,12 @@ const DAYS = [
   ]},
   { id: 6, label: 'D6 登别', date: '12/24 周四', title: '平安夜 · 地狱谷 · 温泉旅馆', color: '#34c759', locations: [
     { name: 'JR特急北斗 函馆→登别', lat: 41.7736, lng: 140.7264, type: 'transport', time: '10:30', desc: '约2.5小时，13:30前后到登别站', gmap: 'Noboribetsu+Station' },
-    { name: '登别温泉旅馆（待订·最优先）', lat: 42.4935, lng: 141.1442, type: 'hotel', time: '14:00', desc: '平安夜一泊二食：怀石晚餐+雪见温泉', detail: '参考：第一滝本馆（35池大浴场直面地狱谷）／登别Grand Hotel。订不到退mahoroba。全程唯一必须提前订死的住宿，现在就订。', gmap: 'Daiichi+Takimotokan+Noboribetsu', xhsKeyword: '登别 第一滝本馆' },
+    { name: '登别温泉旅馆（待订·最优先）', lat: 42.4935, lng: 141.1442, type: 'hotel', time: '14:00', desc: '平安夜一泊二食：怀石晚餐+雪见温泉', detail: '参考：第一滝本馆（35池大浴场直面地狱谷）／登别Grand Hotel／mahoroba（语雀同事实测满意，飞猪可订）。全程唯一必须提前订死的住宿，现在就订。订到mahoroba的隐藏福利：有免费巴士直达札幌电视塔，但必须提前在 h-mahoroba.jp 官网订座——同事实测现场人满为患很多人没坐上。多泡几次硫磺温泉值回票价。', gmap: 'Daiichi+Takimotokan+Noboribetsu', xhsKeyword: '登别 第一滝本馆' },
     { name: '地狱谷雪中步道', lat: 42.4970, lng: 141.1470, type: 'spot', time: '14:30', desc: '火山口遗迹蒸汽+白雪，15:30前走完', detail: '步道结冰，防滑鞋刚需。雪大只走观景台段。大汤沼方向有免费足汤。', gmap: 'Jigokudani+Noboribetsu', xhsKeyword: '登别 地狱谷 冬季' },
     { name: '大汤沼川 天然足汤', lat: 42.5015, lng: 141.1445, type: 'spot', time: '—', desc: '备选：雪中溪谷泡脚，带小毛巾', gmap: 'Oyunumagawa+Natural+Footbath' }
   ]},
   { id: 7, label: 'D7 札幌', date: '12/25 周五', title: '圣诞夜 · 大通灯海 · 薄野', color: '#ff375f', locations: [
-    { name: 'JR特急 登别→札幌', lat: 42.4935, lng: 141.1442, type: 'transport', time: '10:30', desc: '晨汤后再泡一次，约1h15m，12:00前后到札幌', gmap: 'Sapporo+Station' },
+    { name: 'JR特急 登别→札幌', lat: 42.4935, lng: 141.1442, type: 'transport', time: '10:30', desc: '晨汤后再泡一次，约1h15m，12:00前后到札幌', detail: '若订到mahoroba：改坐酒店免费巴士直达札幌电视塔（省约4,500円/人还免拖箱换乘），但必须提前在 h-mahoroba.jp 官网订座，现场没位（语雀同事实测）。订不到巴士再走JR。到札幌若酒店不能早入住：车站寄存柜大多满，直接去人工寄存点。', gmap: 'Sapporo+Station' },
     { name: '奥芝商店 駅前創成寺', lat: 43.0672, lng: 141.3505, type: 'food', time: '12:30', desc: '午餐：虾高汤汤咖喱，札幌站地下直通不走雪地', budget: '人均 1,500–2,000円', pay: { cash: 1, card: 0.5 }, detail: '不能预约，避开正饭点。招牌海老だし+软烂大鸡腿。', gmap: 'Okushiba+Shoten+Sapporo', xhsKeyword: '奥芝商店 汤咖喱' },
     { name: '札幌酒店（待订）', lat: 43.0630, lng: 141.3540, type: 'hotel', time: '14:00', desc: '住札幌站—大通之间，2晚（25–26日）', detail: '选址原则：地铁站步行8分钟内，出门就是灯海和狸小路。', gmap: 'Odori+Station+Sapporo' },
     { name: '狸小路商店街', lat: 43.0568, lng: 141.3486, type: 'spot', time: '14:30', desc: '900米全顶棚商店街，下雪不怕，药妆伴手礼', detail: '药妆最晚23:00，伴手礼店21:00–22:00关。地下街POLE TOWN连通大通—薄野。', gmap: 'Tanukikoji+Shopping+Street', xhsKeyword: '狸小路 必买' },
@@ -302,7 +302,8 @@ const DAYS = [
     { name: '成吉思汗 羊々亭 札幌本店', lat: 43.0555, lng: 141.3538, type: 'food', time: '—', desc: '备选晚餐：烤羊肉，だるま排不动时的另一平替', detail: '来自你收藏的札幌美食清单。座位比だるま本店多，风格接近。', gmap: 'Yoyotei+Sapporo', xhs: 'https://www.xiaohongshu.com/explore/6afc3e2c000000001803b18e' },
     { name: 'うに専門店 世壱屋 薄野', lat: 43.0545, lng: 141.3535, type: 'food', time: '—', desc: '备选：海胆专门店，海胆控专属（预算高）', detail: '来自你收藏的札幌美食清单。与D9二条市场大磯海胆丼重叠，二选一即可。', gmap: 'Yoichiya+Susukino+Sapporo', xhs: 'https://www.xiaohongshu.com/explore/6afc3e2c000000001803b18e' },
     { name: 'シハチ鮮魚 狸COMICHI', lat: 43.0570, lng: 141.3500, type: 'food', time: '—', desc: '备选晚餐：海鲜居酒屋，狸小路内逛街顺路', detail: '来自你收藏的札幌美食清单。', gmap: 'Shihachi+Sengyo+Tanukikoji', xhs: 'https://www.xiaohongshu.com/explore/6afc3e2c000000001803b18e' },
-    { name: 'ESPRESSO D WORKS / DRA7', lat: 43.0590, lng: 141.3530, type: 'food', time: '—', desc: '备选下午茶：松饼出名，大通附近歇脚', detail: '来自你收藏的札幌美食清单。宫越屋咖啡也是清单里的歇脚备选。', gmap: 'Espresso+D+Works+Sapporo', xhs: 'https://www.xiaohongshu.com/explore/6afc3e2c000000001803b18e' }
+    { name: 'ESPRESSO D WORKS / DRA7', lat: 43.0590, lng: 141.3530, type: 'food', time: '—', desc: '备选下午茶：松饼出名，大通附近歇脚', detail: '来自你收藏的札幌美食清单。宫越屋咖啡也是清单里的歇脚备选。', gmap: 'Espresso+D+Works+Sapporo', xhs: 'https://www.xiaohongshu.com/explore/6afc3e2c000000001803b18e' },
+    { name: 'AOAO Sapporo 夜间水族馆', lat: 43.0576, lng: 141.3548, type: 'spot', time: '—', desc: '备选：商场内夜间水族馆，语雀同事推荐', detail: 'moyuk SAPPORO内，营业到晚上，雪夜室内好去处；萌物周边好买（购物笔记也点名）。与圣诞市集二选一或饭前顺路。', gmap: 'AOAO+Sapporo+Aquarium' }
   ]},
   { id: 8, label: 'D8 小樽', date: '12/26 周六', title: '小樽运河 · 青之点灯', color: '#00c7be', locations: [
     { name: 'JR快速 札幌→小樽', lat: 43.0686, lng: 141.3508, type: 'transport', time: '09:00', desc: '约35分钟。暴雪可能停运/延误，出门查运行情报', gmap: 'Otaru+Station' },
@@ -385,8 +386,9 @@ function overviewContent() {
 <div class="section-head">来自你的小红书收藏</div>
 <div class="pay-summary"><h4>📕 已并入「北海道」专辑要点（33条笔记）</h4>· 圣诞市集：热红酒800円/马克杯套餐约1,800円，电视塔亮灯到24:00<br>· 雪夜走地下街POLE TOWN：狸小路—大通—薄野免挨冻<br>· D8小樽：钱函站晴天中途下车拍海；天狗山与运河点灯二选一（下山排队1h警告）<br>· 船见坂晴天去才出片；祝津海岸支线冬季关闭不去<br>· JR Pass：有函馆段必回本→买北海道5日券；小樽回程有高速巴士备份<br>· 相关卡片已挂原笔记链接（📕按钮）</div>
 <div class="pay-summary"><h4>⚠️ 退税新规（11月起，收藏笔记博主实测）</h4><span class="warn">不再店内直接免税</span>：先付含税全款，离境后退税。结账没要护照→立刻问「免税登记在哪里办」（mont-bell一楼结账二楼登记，漏登退不了）。每晚扫小票二维码登记+专袋保管小票；新千岁机器刷护照，选支付宝退税回国1天内到账。购物预算按含税垫付多备约10%。<br>🚄 北海道JR班次极稀疏，错过等1–2小时：每天出门前截图当日班次表，D4/D6移动日卡准。</div>
+<div class="pay-summary"><h4>📗 语雀同事行程实测要点（东京+道南春节线）</h4>· <span class="ok-text">mahoroba满意+免费札幌巴士</span>：D7交通可省约4,500円/人，但巴士须官网提前订座<br>· 道南巴士机场→登别冬季现场买不到（willer-travel.com提前网购）——我们直达函馆不坐，记为动线备份<br>· 札幌站寄存柜大多满→直接去人工寄存点<br>· 全蟹宴两人约2,000元「值了」；北海道神宫、AOAO水族馆获推荐；Tiger Curry像商场便餐不必专程<br>· 零钱袋必带（硬币极多）；防滑靴最重要；美瑛一日团实操（约400元/人、6人成团需预约）记入下次素材</div>
 <div class="section-head">现在就要订</div>
-<div class="pay-summary"><h4>📅 预订清单（按紧急度）</h4>1. 机票三段：12/19到KIX、12/22 KIX→CTS早班、12/27 CTS→国内午后班<br>2. <span class="warn">登别温泉旅馆12/24平安夜一泊二食（最紧俏）</span><br>3. 酒店：难波3晚、函馆站前2晚、札幌站—大通2晚<br>4. USJ 12/21门票+快速券（去USJ才买）<br>5. 蟹道乐12/21晚订位 · 梅田空中庭园12/20日落票<br>6. <span class="ok-text">北海道铁路周游券5日券</span>约21,000円/人（12/22–26，含函馆段必回本；单买三段指定席约20,500円还不含小樽）；圣诞周提前官网划指定席</div>
+<div class="pay-summary"><h4>📅 预订清单（按紧急度）</h4>1. 机票三段：12/19到KIX、12/22 KIX→CTS早班、12/27 CTS→国内午后班<br>2. <span class="warn">登别温泉旅馆12/24平安夜一泊二食（最紧俏）</span><br>3. 酒店：难波3晚、函馆站前2晚、札幌站—大通2晚<br>4. USJ 12/21门票+快速券（去USJ才买）<br>5. 蟹道乐12/21晚订位 · 梅田空中庭园12/20日落票<br>6. <span class="ok-text">北海道铁路周游券5日券</span>约21,000円/人（12/22–26，含函馆段必回本；单买三段指定席约20,500円还不含小樽）；圣诞周提前官网划指定席<br>7. <span class="warn">若订到mahoroba：h-mahoroba.jp 预订12/25免费札幌巴士</span>（冬季现场没座，同事实测）<br>8. 行前自办：VJW入境二维码填好截图（vjw.digital.go.jp）· <span class="warn">手机Suica现在就试加钱包</span>（可能失败，失败落地便利店买实体卡500円押金）· 换现金两人共8–10万円+零钱袋</div>
 <div class="section-head">支付与现金提醒</div>
 <div class="pay-summary"><h4>💴 每天带1–2万円现金</h4><span class="warn">只收现金/PayPay：</span>Suage+、金龙拉面、麺屋すみれ、朝市多数摊位<br><span class="ok-text">可刷卡：</span>大商场、便利店、蟹道乐、连锁餐厅<br>支付宝/微信覆盖不稳定，别依赖。交通用Suica/ICOCA（手机可开）。</div>
 <div class="pay-summary"><h4>❄️ 雪季提醒</h4>防滑防水靴刚需 · 帽手套围巾焊身上 · 手机贴暖宝宝<br><span class="warn">函馆山缆车大风停运</span>：当天16:00前查 334.co.jp<br>暴雪JR小樽线可能延误：D8出门查运行情报，备选札幌市内</div>
