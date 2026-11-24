@@ -379,6 +379,9 @@ function overviewContent() {
   <div class="info-card"><div class="label">北海道动线</div><div class="value">新千岁→函馆→登别→札幌 单向不回头</div></div>
   <div class="info-card"><div class="label">天黑时间</div><div class="value">北海道16:00 · 大阪16:50<br>户外排15:30前</div></div>
 </div>
+<div class="section-head">北海道景点分布 · 删减视图</div>
+<div class="pay-summary"><h4>🗺️ 上方地图已显示北海道全部点位（D4–D9）</h4><b>实心点=主行程，空心圈=备选</b>，颜色按天区分（点图例可跳转当天）。点任意点位弹窗里直接「✕ 删减」，地图立即消失，顶部「已删减」页可恢复。<br><button class="btn restore" style="margin-top:8px" onclick="window._ovMode=window._ovMode==='all'?'hk':'all';showDay(0);this.textContent=window._ovMode==='all'?'只看北海道 D4–D9':'切换：显示全程（含大阪）'">切换：显示全程（含大阪）</button> <span style="color:var(--text-tertiary)">札幌/小樽点位密集，放大地图即可分开</span></div>
+<div class="pay-summary"><h4>🎨 按天颜色</h4>${DAYS.filter(d=>d.id>=4).map(d=>`<span style="display:inline-flex;align-items:center;margin:2px 10px 2px 0;cursor:pointer" onclick="go(${d.id})"><span style="width:10px;height:10px;border-radius:50%;background:${d.color};display:inline-block;margin-right:5px"></span>${d.label} ${d.title.split(' · ')[0]}</span>`).join('')}</div>
 <div class="section-head">行程概览</div>
 <div class="day-list">${DAYS.slice(1).map(d=>`<div class="card" onclick="go(${d.id})"><div class="name"><span class="dot" style="background:${d.color}"></span>${d.label} · ${d.title}</div><div class="desc">${d.date}</div></div>`).join('')}</div>
 <div class="section-head">待选池</div>
@@ -504,12 +507,21 @@ async function drawRoutes(day) {
 function showDay(idx) {
   clearMap();
   if (idx === 0) {
+    const hk = DAYS.filter(d=>d.id>=4); // 北海道段 D4–D9（含大阪可切「全程」）
+    const mode = window._ovMode || 'hk';
+    const days = mode==='all' ? DAYS.slice(1) : hk;
     const pts = [];
-    DAYS.forEach(d => d.locations.forEach(l => { if(l.lat && !isCut(d.id,l.name)) pts.push([l.lat,l.lng]); }));
+    days.forEach(d => d.locations.forEach(l => { if(l.lat && !isCut(d.id,l.name)) pts.push([l.lat,l.lng]); }));
     if(pts.length) map.fitBounds(pts, {padding:[30,30]});
-    DAYS.slice(1).forEach(d => {
-      d.locations.filter(l=>l.time!=='—' && !isCut(d.id,l.name)).forEach(l => {
-        const m = L.circleMarker([l.lat,l.lng], { radius:4, fillColor:d.color, color:'#fff', weight:1.5, fillOpacity:.9 }).addTo(map).bindPopup(`<b>${l.name}</b><br><span style="color:#86868b">${d.label}</span>`);
+    days.forEach(d => {
+      d.locations.filter(l=>!isCut(d.id,l.name)).forEach(l => {
+        const isAlt = l.time==='—';
+        const m = L.circleMarker([l.lat,l.lng], isAlt
+          ? { radius:5, fillColor:'#fff', color:d.color, weight:2, fillOpacity:.85, dashArray:'2,2' }
+          : { radius:6, fillColor:d.color, color:'#fff', weight:1.5, fillOpacity:.95 }).addTo(map);
+        const key = `${d.id}::${l.name}`;
+        const safe = l.name.replace(/'/g,"\\'");
+        m.bindPopup(`<b>${l.name}</b><br><span style="color:#86868b">${d.label} · ${isAlt?'备选':l.time}</span><br>${l.desc}<br><a href="#" onclick="event.preventDefault();cutLoc(${d.id},'${safe}')">✕ 删减此项</a>`);
         markers.push(m);
       });
     });
